@@ -37,9 +37,9 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
             Flexible(
               flex: 2,
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 500),
+                constraints: const BoxConstraints(maxWidth: 500),
                 child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: InfoLabel(
                     label: 'Banco de Dados',
                     labelStyle: TextStyle(fontWeight: _titleLabel),
@@ -56,20 +56,20 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                             TextSpan(
                                 text: 'utiliza como base de dados o ',
                                 style: DefaultTextStyle.of(context).style),
-                            TextSpan(
+                            const TextSpan(
                                 text: 'MongoDb.',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             TextSpan(
                                 text:
                                     '\n\nVocê pode configurar um banco de dados ',
                                 style: DefaultTextStyle.of(context).style),
-                            TextSpan(
+                            const TextSpan(
                                 text: 'Local ',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             TextSpan(
                                 text: 'ou em nuvem com o ',
                                 style: DefaultTextStyle.of(context).style),
-                            TextSpan(
+                            const TextSpan(
                                 text: 'MongoDB Atlas. ',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             TextSpan(
@@ -100,9 +100,9 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
             const SizedBox(height: 20),
             Flexible(
               child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 500),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                constraints: const BoxConstraints(maxWidth: 500),
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: SelectableText(
                       'Caso seja necessário configurar o aplicativo para conectar com o MongoDB hospedado em outro serviço de nuvem, favor contactar o suporte'),
                 ),

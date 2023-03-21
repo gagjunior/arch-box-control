@@ -91,8 +91,9 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                   child: InfoLabel(
                     label: 'URL de Conexão com a Base de Dados',
                     labelStyle: TextStyle(fontWeight: _titleLabel),
-                    child:
-                        const TextBox(placeholder: 'mongodb://localhost:27017'),
+                    child: const TextBox(
+                        placeholder: 'mongodb://localhost:27017',
+                        autofocus: true),
                   ),
                 ),
               ),

@@ -1,7 +1,8 @@
+//import 'package:mongo_dart/mongo_dart.dart' as mongodb;
 import 'package:arch_box_control/screens/database_config.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:system_theme/system_theme.dart';
-//import 'package:mongo_dart/mongo_dart.dart' as mongodb;
 
 /*
     var db = await mongodb.Db.create(
@@ -18,6 +19,8 @@ import 'package:system_theme/system_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemTheme.accentColor.load();
+  await Hive.initFlutter();
+  await Hive.openBox('dbSettings');
   runApp(const MyApp());
 }
 

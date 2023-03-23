@@ -82,7 +82,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Flexible(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 500),
@@ -97,6 +97,12 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                   ),
                 ),
               ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FilledButton(
+                  child: Text('Salvar Conexão'),
+                  onPressed: () => debugPrint('Salvar Conexão')),
             ),
             const SizedBox(height: 20),
             Flexible(

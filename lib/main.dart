@@ -1,5 +1,7 @@
 //import 'package:mongo_dart/mongo_dart.dart' as mongodb;
 import 'package:arch_box_control/screens/database_config.dart';
+import 'package:arch_box_control/screens/home.dart';
+import 'package:arch_box_control/services/config_db_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:system_theme/system_theme.dart';
@@ -21,11 +23,12 @@ void main() async {
   await SystemTheme.accentColor.load();
   await Hive.initFlutter();
   await Hive.openBox('dbSettings');
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final bool isDbUrl = ConfigDbService.isUrlSaved();
 
   // This widget is the root of your application.
   @override
@@ -33,7 +36,7 @@ class MyApp extends StatelessWidget {
     return FluentApp(
       debugShowCheckedModeBanner: false,
       title: 'ArchBoxControl',
-      home: const DataBaseConfig(),
+      home: isDbUrl ? const Home() : const DataBaseConfig(),
       theme: FluentThemeData(
           accentColor: SystemTheme.accentColor.accent.toAccentColor(),
           scaffoldBackgroundColor: Colors.white),

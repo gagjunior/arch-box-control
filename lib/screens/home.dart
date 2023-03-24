@@ -10,7 +10,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
+    return const ScaffoldPage(
       content: Center(
         child: Text('Home Page'),
       ),

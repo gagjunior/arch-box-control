@@ -1,3 +1,4 @@
+import 'package:arch_box_control/services/config_db_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class DataBaseConfig extends StatefulWidget {
@@ -9,6 +10,13 @@ class DataBaseConfig extends StatefulWidget {
 
 class _DataBaseConfigState extends State<DataBaseConfig> {
   final FontWeight _titleLabel = FontWeight.w600;
+  final TextEditingController _urlConnControler = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _urlConnControler.text = ConfigDbService.databaseConnectionUrl();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,9 +99,11 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                   child: InfoLabel(
                     label: 'URL de Conexão com a Base de Dados',
                     labelStyle: TextStyle(fontWeight: _titleLabel),
-                    child: const TextBox(
-                        placeholder: 'mongodb://localhost:27017',
-                        autofocus: true),
+                    child: TextBox(
+                      controller: _urlConnControler,
+                      placeholder: 'mongodb://localhost:27017',
+                      autofocus: true,
+                    ),
                   ),
                 ),
               ),
@@ -101,8 +111,12 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: FilledButton(
-                  child: Text('Salvar Conexão'),
-                  onPressed: () => debugPrint('Salvar Conexão')),
+                child: const Text('Salvar Conexão'),
+                onPressed: () {
+                  debugPrint('Url connection: ${_urlConnControler.text}');
+                  ConfigDbService.saveConnection(_urlConnControler.text);
+                },
+              ),
             ),
             const SizedBox(height: 20),
             Flexible(

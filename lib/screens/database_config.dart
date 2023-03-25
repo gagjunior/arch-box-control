@@ -1,3 +1,4 @@
+import 'package:arch_box_control/screens/home.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
@@ -24,10 +25,8 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
       content: Center(
         heightFactor: 1.5,
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //const SizedBox(height: 20),
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -115,6 +114,12 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                 onPressed: () {
                   debugPrint('Url connection: ${_urlConnControler.text}');
                   ConfigDbService.saveConnection(_urlConnControler.text);
+                  Navigator.push(
+                    context,
+                    FluentPageRoute(
+                      builder: (context) => const Home(),
+                    ),
+                  );
                 },
               ),
             ),

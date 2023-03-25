@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: basic_utils
-      sha256: "2d50b55264d1a3505f72c93a82f95fce25fd6ce3b9a8c868c40d2152d84ff5f5"
+      sha256: "05993c20640f2fd99727b8c3e9de3f288b1e92f0191a9cea0ef65b37d6c5d6db"
       url: "https://pub.dev"
     source: hosted
-    version: "5.5.2"
+    version: "5.5.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -141,10 +141,10 @@ packages:
     dependency: "direct main"
     description:
       name: fluentui_system_icons
-      sha256: e664ed344e0d59372bd4797a41ea77261b60a056b3722636f716389a5364ba1b
+      sha256: f8c8ca00215d790f769bfa4837b8152ac863e62be837f6590d423f19819e36b3
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.191"
+    version: "1.1.197"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -302,7 +302,7 @@ packages:
     source: hosted
     version: "1.8.2"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4
@@ -377,10 +377,10 @@ packages:
     dependency: transitive
     description:
       name: pointycastle
-      sha256: ae73e842cdd27a3467a71d70cefd9b198538aab4fc7dde1d0e8c78c96225abf0
+      sha256: c3120a968135aead39699267f4c74bc9a08e4e909e86bc1b0af5bfd78691123c
       url: "https://pub.dev"
     source: hosted
-    version: "3.7.1"
+    version: "3.7.2"
   pool:
     dependency: transitive
     description:

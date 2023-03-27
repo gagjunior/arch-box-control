@@ -1,5 +1,6 @@
 import 'package:arch_box_control/screens/home.dart';
-import 'package:arch_box_control/services/config_db_service.dart';
+import 'package:arch_box_control/screens/login.dart';
+import 'package:arch_box_control/services/db_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class DataBaseConfig extends StatefulWidget {
@@ -16,7 +17,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
   @override
   void initState() {
     super.initState();
-    _urlConnControler.text = ConfigDbService.databaseConnectionUrl();
+    _urlConnControler.text = ConfigDbService.dbConnUrl();
   }
 
   @override
@@ -117,7 +118,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                   Navigator.push(
                     context,
                     FluentPageRoute(
-                      builder: (context) => const Home(),
+                      builder: (context) => const Login(),
                     ),
                   );
                 },

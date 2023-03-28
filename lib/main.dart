@@ -1,25 +1,12 @@
-import 'package:mongo_dart/mongo_dart.dart' as mongodb;
 import 'dart:io';
 
 import 'package:arch_box_control/screens/database_config.dart';
 import 'package:arch_box_control/screens/login.dart';
-import 'package:arch_box_control/services/db_service.dart';
+import 'package:arch_box_control/services/db_config_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:system_theme/system_theme.dart';
-
-/*
-    var db = await mongodb.Db.create(
-      'mongodb+srv://gilberto_junior:NvidiaCoreI01@archboxcontrol.vpeklbe.mongodb.net/ArchBoxControl?retryWrites=true&w=majority');
-  await db.open();
-
- var db = await mongodb.Db.create('mongodb://localhost:27017');
-  await db.open();
-  print(db.isConnected);
-  print(db.state);
-  print(db.databaseName);
-*/
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,20 +16,13 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('dbSettings', path: dataDir);
 
-  var db = await mongodb.Db.create('mongodb://SRVCWB52:27017');
-  await db.open();
-  print(db.isConnected);
-  print(db.state);
-  print(db.databaseName);
-
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   MyApp({super.key});
-  final bool dbUrlFound = ConfigDbService.dbUrlFound();
+  final bool dbUrlFound = DbConfigService.dbUrlFound();
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return FluentApp(

@@ -159,12 +159,14 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
               _heightSpacer,
               InfoLabel(
                 label: 'E-mail',
-                labelStyle: TextStyle(color: Colors.blue.light),
+                labelStyle: TextStyle(color: Colors.blue[600]),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
-                  child: TextFormBox(
+                  child: TextFormField(
                     controller: _emailController,
-                    placeholder: 'exemplo@gmail.com',
+                    decoration: InputDecoration(
+                      hintText: 'exemplo@gmail.com',
+                    ),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (text) {
                       if (text == null || text.isEmpty) {

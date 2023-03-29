@@ -1,6 +1,6 @@
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/db_config_service.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 
 class DataBaseConfig extends StatefulWidget {
@@ -26,30 +26,29 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage.scrollable(
-      children: [
-        Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 40),
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 40),
               Text(
                 'Configuração da Base de Dados',
                 softWrap: true,
                 style: TextStyle(
-                  color: Colors.blue.dark,
+                  color: Colors.blue[600],
                   fontSize: 24,
                 ),
               ),
               _heightSpacer,
-              InfoLabel(
-                label: 'Banco de Dados',
-                labelStyle: TextStyle(
+              Text(
+                'Banco de Dados',
+                style: TextStyle(
                   fontWeight: _fontWeightTitleLabel,
                   fontSize: _fontSizeTitleLabel,
                   fontStyle: _fontStyleTitleLabel,
-                ),
-                child: SelectableText.rich(
+                ),),
+                SelectableText.rich(
                   TextSpan(
                       text: 'O aplicativo ',
                       style: DefaultTextStyle.of(context).style,
@@ -58,7 +57,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                             text: 'ArchBoxControl ',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: Colors.blue.dark)),
+                                color: Colors.blue[600])),
                         TextSpan(
                             text: 'utiliza como base de dados o ',
                             style: DefaultTextStyle.of(context).style),
@@ -90,10 +89,17 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                 labelStyle: TextStyle(color: Colors.blue.light),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
-                  child: TextBox(
+                  child: TextFormBox(
                     controller: _urlConnController,
                     placeholder: 'mongodb://localhost:27017',
                     autofocus: true,
+                    autovalidateMode: AutovalidateMode.always,
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return 'digite a url de conexão com o banco de dados';
+                      }
+                      return null;
+                    },
                   ),
                 ),
               ),
@@ -104,11 +110,12 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                   children: [
                     FilledButton(
                       child: const Padding(
-                        padding: EdgeInsets.all(6.0),
+                        padding: EdgeInsets.all(4.0),
                         child: Text('Salvar Conexão'),
                       ),
                       onPressed: () {
-                        debugPrint('Url connection: ${_urlConnController.text}');
+                        debugPrint(
+                            'Url connection: ${_urlConnController.text}');
                         DbConfigService.saveConnection(_urlConnController.text);
                         Navigator.push(
                           context,
@@ -138,13 +145,13 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                     text: 'É obrigatório cadastrar um ',
                     style: DefaultTextStyle.of(context).style,
                     children: [
-                      TextSpan(
+                      const TextSpan(
                           text: 'usuário administrador ',
                           style: TextStyle(fontWeight: FontWeight.w600)),
                       TextSpan(
                           text: 'para o primeiro acesso ao aplicativo.',
                           style: DefaultTextStyle.of(context).style),
-                      TextSpan(
+                      const TextSpan(
                           text:
                               '\n\nVocê pode realizar o cadastro preenchendo os campos abaixo.')
                     ]),
@@ -167,7 +174,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                         return 'E-mail não é válido';
                       }
                       return null;
-                    },                                   
+                    },
                   ),
                 ),
               ),
@@ -179,6 +186,8 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: TextFormBox(
                     controller: _emailController,
+                    obscureText: true,
+                    obscuringCharacter: '◉',
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
@@ -188,14 +197,13 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                         return 'A senha deve estar entre 8 e 12 caracteres';
                       }
                       return null;
-                    },                                   
+                    },
                   ),
                 ),
               )
-            ],
-          ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

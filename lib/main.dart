@@ -27,13 +27,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData();
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'ArchBoxControl',
-        home: dbUrlFound ? const Login() : const DataBaseConfig(),
-        theme: theme.copyWith(
-            scaffoldBackgroundColor: Colors.white,
-            colorScheme: theme.colorScheme.copyWith(
-              secondary: SystemTheme.accentColor.accent,
-            )));
+      debugShowCheckedModeBanner: false,
+      title: 'ArchBoxControl',
+      home: dbUrlFound ? const Login() : const DataBaseConfig(),
+      theme: theme.copyWith(
+        scaffoldBackgroundColor: Colors.white,
+        colorScheme: theme.colorScheme.copyWith(
+          secondary: SystemTheme.accentColor.accent,
+        ),
+      ),
+    );
   }
 }

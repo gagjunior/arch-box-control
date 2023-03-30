@@ -12,14 +12,23 @@ class DataBaseConfig extends StatefulWidget {
 
 class _DataBaseConfigState extends State<DataBaseConfig> {
   final SizedBox _vSpacer = const SizedBox(height: 20);
+  final SizedBox _hSpacer = const SizedBox(width: 20);
   final TextEditingController _urlConnController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _urlDbEnable = true;
+  bool _disableEditUrlDb = true;
+  bool _disableSaveUrlDb = false;
 
   @override
   void initState() {
     super.initState();
-    _urlConnController.text = DbConfigService.getDbUrl();
+    if (DbConfigService.dbUrlFound()) {
+      _urlConnController.text = DbConfigService.getDbUrl();
+      _urlDbEnable = false;
+      _disableEditUrlDb = false;
+      _disableSaveUrlDb = true;
+    }
   }
 
   @override
@@ -79,6 +88,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                     label: 'URL de conexão',
                     child: TextFormBox(
                       controller: _urlConnController,
+                      enabled: _urlDbEnable,
                       autofocus: true,
                       placeholder: 'mongodb://localhost:27017',
                       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -92,21 +102,51 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                FilledButton(
-                  style: ButtonStyle(
-                    padding: ButtonState.all(const EdgeInsets.all(8)),
-                  ),
-                  child: const Text('Salvar Conexão'),
-                  onPressed: () {
-                    debugPrint('Url connection: ${_urlConnController.text}');
-                    DbConfigService.saveConnection(_urlConnController.text);
-                    Navigator.push(
-                      context,
-                      FluentPageRoute(
-                        builder: (context) => const Login(),
+                ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 500),
+                  child: Row(
+                    children: [
+                      FilledButton(
+                        style: ButtonStyle(
+                          padding: ButtonState.all(const EdgeInsets.all(8)),
+                        ),
+                        onPressed: _disableSaveUrlDb
+                            ? null
+                            : () {
+                                debugPrint(
+                                    'Url connection: ${_urlConnController.text}');
+                                DbConfigService.saveConnection(
+                                    _urlConnController.text);
+                                setState(() {
+                                  _urlConnController.text =
+                                      DbConfigService.getDbUrl();
+                                  _urlDbEnable = false;
+                                  _disableEditUrlDb = false;
+                                  _disableSaveUrlDb = true;
+                                });
+                              },
+                        child: const Text('Salvar Conexão'),
                       ),
-                    );
-                  },
+                      _hSpacer,
+                      FilledButton(
+                        style: ButtonStyle(
+                          padding: ButtonState.all(const EdgeInsets.all(8)),
+                        ),
+                        onPressed: _disableEditUrlDb
+                            ? null
+                            : () {
+                                setState(() {
+                                  _urlConnController.text =
+                                      DbConfigService.getDbUrl();
+                                  _urlDbEnable = true;
+                                  _disableSaveUrlDb = false;
+                                  _disableEditUrlDb = true;
+                                });
+                              },
+                        child: const Text('Editar Conexão'),
+                      ),
+                    ],
+                  ),
                 ),
                 _vSpacer,
                 const SelectableText(

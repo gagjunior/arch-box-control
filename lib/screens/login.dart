@@ -53,8 +53,8 @@ class Login extends StatelessWidget {
               child: InfoLabel(
                 label: 'Password',
                 isHeader: true,
-                child: const TextBox(
-                  prefix: Padding(
+                child: TextFormBox(
+                  prefix: const Padding(
                     padding: EdgeInsets.all(8),
                     child: Icon(FluentIcons.password_field),
                   ),

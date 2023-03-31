@@ -1,7 +1,6 @@
-import 'package:arch_box_control/data/models/user_model.dart';
-import 'package:arch_box_control/data/repositories/user_repository.dart';
+import 'package:arch_box_control/data/services/config_db_service.dart';
+import 'package:arch_box_control/data/services/user_service.dart';
 import 'package:arch_box_control/screens/login.dart';
-import 'package:arch_box_control/services/db_config_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
@@ -18,19 +17,28 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
   final TextEditingController _urlConnController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final UserService _userService = UserService();
   bool _urlDbEnable = true;
+  bool _enableNameField = false;
+  bool _enableEmailField = false;
+  bool _enablePasswordField = false;
+  bool _enableSaveUser = false;
   bool _disableEditUrlDb = true;
   bool _disableSaveUrlDb = false;
-  UserRepository userRepository = UserRepository();
 
   @override
   void initState() {
     super.initState();
-    if (DbConfigService.dbUrlFound()) {
-      _urlConnController.text = DbConfigService.getDbUrl();
+    if (ConfigDbService.dbUrlFound()) {
+      _urlConnController.text = ConfigDbService.getDbUrl();
       _urlDbEnable = false;
       _disableEditUrlDb = false;
       _disableSaveUrlDb = true;
+      _enableNameField = true;
+      _enableEmailField = true;
+      _enablePasswordField = true;
+      _enableSaveUser = true;
     }
   }
 
@@ -94,7 +102,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                       enabled: _urlDbEnable,
                       autofocus: true,
                       placeholder: 'mongodb://localhost:27017',
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'É obrigatório digitar a URL de conexão com o banco de dados';
@@ -116,17 +124,25 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                         onPressed: _disableSaveUrlDb
                             ? null
                             : () {
-                                debugPrint(
-                                    'Url connection: ${_urlConnController.text}');
-                                DbConfigService.saveConnection(
-                                    _urlConnController.text);
-                                setState(() {
-                                  _urlConnController.text =
-                                      DbConfigService.getDbUrl();
-                                  _urlDbEnable = false;
-                                  _disableEditUrlDb = false;
-                                  _disableSaveUrlDb = true;
-                                });
+                                String urlConn = _urlConnController.text;
+                                if (urlConn.isEmpty || urlConn == '') {
+                                  showContentDialog(context);
+                                } else {
+                                  String urlconn = _urlConnController.text;
+                                  String emailUserAdm = _emailController.text;
+                                  ConfigDbService.saveConnection(urlconn, emailUserAdm);
+                                  setState(() {
+                                    _urlConnController.text =
+                                        ConfigDbService.getDbUrl();
+                                    _urlDbEnable = false;
+                                    _disableEditUrlDb = false;
+                                    _disableSaveUrlDb = true;
+                                    _enableEmailField = true;
+                                  _enableNameField = true;
+                                  _enablePasswordField = true;
+                                  _enableSaveUser = true;
+                                  });
+                                }
                               },
                         child: const Text('Salvar Conexão'),
                       ),
@@ -140,10 +156,14 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                             : () {
                                 setState(() {
                                   _urlConnController.text =
-                                      DbConfigService.getDbUrl();
+                                      ConfigDbService.getDbUrl();
                                   _urlDbEnable = true;
                                   _disableSaveUrlDb = false;
                                   _disableEditUrlDb = true;
+                                  _enableEmailField = false;
+                                  _enableNameField = false;
+                                  _enablePasswordField = false;
+                                  _enableSaveUser = false;
                                 });
                               },
                         child: const Text('Editar Conexão'),
@@ -175,14 +195,33 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: InfoLabel(
-                    label: 'E-mail',
+                    label: 'Nome completo:',
                     child: TextFormBox(
-                      controller: _emailController,
-                      placeholder: 'exemplo@gmail.com',
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: _nameController,
+                      enabled: _enableNameField,
+                      autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return 'O campo "e-mail" é obrigatório';
+                          return 'O campo "Nome completo" é obrigatório';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                _vSpacer,
+                ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600),
+                  child: InfoLabel(
+                    label: 'E-mail:',
+                    child: TextFormBox(
+                      controller: _emailController,
+                      enabled: _enableEmailField,
+                      placeholder: 'exemplo@gmail.com',
+                      autovalidateMode: AutovalidateMode.always,
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'O campo "E-mail" é obrigatório';
                         }
                         if (!EmailValidator.validate(text)) {
                           return 'E-mail digitado não é válido';
@@ -192,21 +231,20 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: InfoLabel(
-                    label: 'Senha',
+                    label: 'Senha:',
                     child: TextFormBox(
                       controller: _passwordController,
+                      enabled: _enablePasswordField,
                       obscureText: true,
                       obscuringCharacter: '◉',
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return 'O campo "senha" é obrigatório';
+                          return 'O campo "Senha" é obrigatório';
                         }
                         if (text.length < 8 || text.length > 12) {
                           return 'A senha deve conter entre 8 e 12 caracteres';
@@ -216,17 +254,17 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 FilledButton(
                   style: ButtonStyle(
                     padding: ButtonState.all(const EdgeInsets.all(8)),
                   ),
-                  onPressed: () {
-                    UserModel user = UserModel('Admin', _emailController.text,
-                        _passwordController.text);
-                    userRepository.saveUser(user);
+                  onPressed: !_enableSaveUser ? null : () {
+                    String name = _nameController.text;
+                    String email = _emailController.text;
+                    String password = _passwordController.text;
+                    _userService.saveUser(
+                        name: name, email: email, password: password);
                   },
                   child: const Text('Salvar Usuário'),
                 ),
@@ -270,5 +308,24 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
         fontStyle: FontStyle.italic,
       ),
     );
+  }
+
+  void showContentDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (context) => ContentDialog(
+        title: const Text('Erro - URL de Conexão'),
+        content: const Text(
+          'A URL de conexão com a base de dados não pode estar em branco! Favor verificar.',
+        ),
+        actions: [
+          FilledButton(
+            child: const Text('Voltar'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
+      ),
+    );
+    setState(() {});
   }
 }

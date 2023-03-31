@@ -1,3 +1,5 @@
+import 'package:arch_box_control/data/models/user_model.dart';
+import 'package:arch_box_control/data/repositories/user_repository.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/db_config_service.dart';
 import 'package:email_validator/email_validator.dart';
@@ -19,6 +21,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
   bool _urlDbEnable = true;
   bool _disableEditUrlDb = true;
   bool _disableSaveUrlDb = false;
+  UserRepository userRepository = UserRepository();
 
   @override
   void initState() {
@@ -221,12 +224,9 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                     padding: ButtonState.all(const EdgeInsets.all(8)),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      FluentPageRoute(
-                        builder: (context) => const Login(),
-                      ),
-                    );
+                    UserModel user = UserModel('Admin', _emailController.text,
+                        _passwordController.text);
+                    userRepository.saveUser(user);
                   },
                   child: const Text('Salvar Usuário'),
                 ),

@@ -4,18 +4,23 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class UserRepository {
-  final _urlDb = ConfigDbService.getDbUrl();
+  final String _urlDb = ConfigDbService.getDbUrl();
+  static const String _collectionName = 'users';
 
   Future<UserModel?> saveUser(UserModel user) async {
     Db db = await Db.create(_urlDb);
-    debugPrint(_urlDb);
     await db.open();
-
-    DbCollection usersCollection = db.collection('users');
-
-    await usersCollection.insertOne(user.toMap);
-
+    DbCollection usersCollection = db.collection(_collectionName);
+    WriteResult result = await usersCollection.insertOne(user.toMap);
+    debugPrint(result.toString());
     await db.close();
     return null;
+  }
+
+  Future<UserModel> findUsersByProfile(String profile) async {
+    Db db = await Db.create(_urlDb);
+    await db.open();
+    DbCollection usersCollection = db.collection(_collectionName);
+    await usersCollection.findOne()
   }
 }

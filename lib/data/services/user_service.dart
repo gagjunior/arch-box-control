@@ -11,25 +11,8 @@ class UserService {
     String? department,
     String? profile,
   }) async {
-    return await _userRepository.saveUser(_toUserModel(
-      name: name,
-      email: email,
-      password: password,
-      department: department,
-      profile: profile,
-    ));
-  }
-
-  UserModel _toUserModel({
-    required String name,
-    required String email,
-    required String password,
-    String? department = '',
-    String? profile = '',
-  }) {
-    UserModel userModel = UserModel(name, email, password);
-    userModel.setDepartment = department ?? '';
-    userModel.setProfile = profile ?? '';
-    return userModel;
+    UserModel user = UserModel(name, email, password,
+        department: department, profile: profile);
+    return await _userRepository.saveUser(user);
   }
 }

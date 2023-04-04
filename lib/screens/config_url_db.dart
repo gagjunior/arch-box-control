@@ -1,17 +1,18 @@
 import 'package:arch_box_control/data/services/config_db_service.dart';
 import 'package:arch_box_control/data/services/user_service.dart';
+import 'package:arch_box_control/screens/config_user_adm.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-class DataBaseConfig extends StatefulWidget {
-  const DataBaseConfig({super.key});
+class ConfigUrlDb extends StatefulWidget {
+  const ConfigUrlDb({super.key});
 
   @override
-  State<DataBaseConfig> createState() => _DataBaseConfigState();
+  State<ConfigUrlDb> createState() => _ConfigUrlDbState();
 }
 
-class _DataBaseConfigState extends State<DataBaseConfig> {
+class _ConfigUrlDbState extends State<ConfigUrlDb> {
   final SizedBox _vSpacer = const SizedBox(height: 20);
   final SizedBox _hSpacer = const SizedBox(width: 20);
   final TextEditingController _urlConnController = TextEditingController();
@@ -283,7 +284,7 @@ class _DataBaseConfigState extends State<DataBaseConfig> {
                       Navigator.push(
                         context,
                         FluentPageRoute(
-                          builder: (context) => const Login(),
+                          builder: (context) => const ConfigUserAdm(),
                         ),
                       );
                     },

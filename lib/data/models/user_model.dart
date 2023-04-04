@@ -29,7 +29,7 @@ class UserModel {
     };
   }
 
-  UserModel toUser(Map<String, dynamic> userData) {
+  static UserModel toUser(Map<String, dynamic> userData) {
     String name = userData['name'];
     String email = userData['email'];
     String password = userData['password'];

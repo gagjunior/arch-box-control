@@ -17,10 +17,16 @@ class UserRepository {
     return null;
   }
 
-  Future<UserModel> findUsersByProfile(String profile) async {
+  Future<List<UserModel>?> findUsersByProfile(String profile) async {
     Db db = await Db.create(_urlDb);
+    List<UserModel> userList = [];
+
     await db.open();
     DbCollection usersCollection = db.collection(_collectionName);
-    await usersCollection.findOne()
+    await usersCollection.find(where.eq('profile', profile)).forEach((user) {
+          userList.add(UserModel.toUser(user));       
+        });        
+   
+    return userList;
   }
 }

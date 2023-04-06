@@ -111,26 +111,11 @@ class _ConfigUrlDbState extends State<ConfigUrlDb> {
                           } else {
                             ConfigDbService.saveConnection(
                                 _urlConnController.text);
-
-                            await _userService
-                                .findUsersByProfile('admin')
-                                .then((value) {
-                              if (value.isNotEmpty) {
-                                Navigator.push(
-                                  context,
-                                  FluentPageRoute(
-                                    builder: (context) => const Login(),
-                                  ),
-                                );
-                              } else {
-                                Navigator.push(
-                                  context,
-                                  FluentPageRoute(
-                                    builder: (context) => const ConfigUserAdm(),
-                                  ),
-                                );
-                              }
-                            });
+                            Navigator.push(
+                                context,
+                                FluentPageRoute(
+                                    builder: (context) =>
+                                        const ConfigUserAdm()));
                           }
                         },
                         child: const Text('Salvar Conexão'),

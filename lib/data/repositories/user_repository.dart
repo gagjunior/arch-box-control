@@ -8,6 +8,7 @@ class UserRepository {
   static const String _collectionName = 'users';
 
   Future<UserModel?> saveNewUser(UserModel user) async {
+    debugPrint(_urlDb);
     Db db = await Db.create(_urlDb);
 
     await db.open();
@@ -32,6 +33,9 @@ class UserRepository {
     await usersCollection.find(where.eq('profile', profile)).forEach((user) {
       userList.add(UserModel.toUser(user));
     });
+    await db.close();
+
+    debugPrint(userList.length.toString());
 
     return userList;
   }

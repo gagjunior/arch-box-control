@@ -18,6 +18,6 @@ class UserService {
   }
 
   Future<List<UserModel>> findUsersByProfile(String profile) async {
-    return _userRepository.findUsersByProfile(profile);
+    return await _userRepository.findUsersByProfile(profile);
   }
 }

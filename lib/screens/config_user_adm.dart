@@ -1,3 +1,5 @@
+import 'package:arch_box_control/data/models/user_model.dart';
+import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
@@ -23,6 +25,18 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
   bool _enableSaveUser = false;
 
   final UserService _userService = UserService();
+
+  @override
+  void initState() {
+    super.initState();
+    _userService.findUsersByProfile('admin').then((value) => {
+          if (value.isNotEmpty)
+            {
+              Navigator.push(
+                  context, FluentPageRoute(builder: (context) => const Login()))
+            }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +80,13 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                     label: 'Nome completo:',
                     child: TextFormBox(
                       controller: _nameController,
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          setState(() {
+                            _enableNameField = true;
+                          });
+                        }
+                      },
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
@@ -85,6 +106,13 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                       controller: _emailController,
                       placeholder: 'exemplo@gmail.com',
                       autovalidateMode: AutovalidateMode.always,
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          setState(() {
+                            _enableEmailField = true;
+                          });
+                        }
+                      },
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'O campo "E-mail" é obrigatório';
@@ -107,6 +135,13 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                       obscureText: true,
                       obscuringCharacter: '◉',
                       autovalidateMode: AutovalidateMode.always,
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          setState(() {
+                            _enablePasswordField = true;
+                          });
+                        }
+                      },
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'O campo "Senha" é obrigatório';
@@ -124,17 +159,27 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                   style: ButtonStyle(
                     padding: ButtonState.all(const EdgeInsets.all(8)),
                   ),
-                  onPressed: () {
-                    String name = _nameController.text;
-                    String email = _emailController.text;
-                    String password = _passwordController.text;
-                    const String profile = 'admin';
-                    _userService.saveNewUser(
-                        name: name,
-                        email: email,
-                        password: password,
-                        profile: profile);
-                  },
+                  onPressed: !_enableNameField &&
+                          !_enableEmailField &&
+                          !_enablePasswordField
+                      ? null
+                      : () {
+                          String name = _nameController.text;
+                          String email = _emailController.text;
+                          String password = _passwordController.text;
+                          const String profile = 'admin';
+                          _userService
+                              .saveNewUser(
+                                name: name,
+                                email: email,
+                                password: password,
+                                profile: profile,
+                              )
+                              .then((value) => Navigator.push(
+                                  context,
+                                  FluentPageRoute(
+                                      builder: (context) => const Login())));
+                        },
                   child: const Text('Salvar Usuário'),
                 ),
                 _vSpacer,

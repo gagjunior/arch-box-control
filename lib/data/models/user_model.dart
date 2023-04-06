@@ -33,8 +33,8 @@ class UserModel {
     String name = userData['name'];
     String email = userData['email'];
     String password = userData['password'];
-    String department = userData['department'];
-    String profile = userData['profile'];
+    String? department = userData['department'];
+    String? profile = userData['profile'];
     return UserModel(name, email, password,
         department: department, profile: profile);
   }

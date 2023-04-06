@@ -16,7 +16,7 @@ class ConfigDbService {
     return userAdm == null || userAdm == '' ? false : true;
   }
 
-  static void saveConnection(String urlConn, String emailUserAdm) async =>
+  static void saveConnection(String urlConn) async =>
       await _boxDbSettings.put(_keyDbUrl, '$urlConn/archBoxControl');
 
   static String getDbUrl() => dbUrlFound() ? _boxDbSettings.get(_keyDbUrl) : '';

@@ -1,8 +1,29 @@
+import 'package:arch_box_control/screens/config_user_adm.dart';
 import 'package:arch_box_control/screens/home.dart';
+import 'package:arch_box_control/services/user_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
-class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+class Login extends StatefulWidget {
+  const Login({super.key});
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  final UserService _userService = UserService();
+
+  @override
+  void initState() {
+    super.initState();
+    _userService.findUsersByProfile('admin').then((value) => {
+          if (value.isEmpty)
+            {
+              Navigator.push(
+                  context, FluentPageRoute(builder: (context) => const ConfigUserAdm()))
+            }
+        });
+  }
 
   @override
   Widget build(BuildContext context) {

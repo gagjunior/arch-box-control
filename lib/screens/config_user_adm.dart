@@ -26,17 +26,7 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
 
   final UserService _userService = UserService();
 
-  @override
-  void initState() {
-    super.initState();
-    _userService.findUsersByProfile('admin').then((value) => {
-          if (value.isNotEmpty)
-            {
-              Navigator.push(
-                  context, FluentPageRoute(builder: (context) => const Login()))
-            }
-        });
-  }
+  
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,5 @@
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
-import 'package:arch_box_control/screens/config_user_adm.dart';
-import 'package:arch_box_control/services/user_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class ConfigUrlDb extends StatefulWidget {
@@ -14,8 +12,6 @@ class ConfigUrlDb extends StatefulWidget {
 class _ConfigUrlDbState extends State<ConfigUrlDb> {
   final SizedBox _vSpacer = const SizedBox(height: 20);
   final TextEditingController _urlConnController = TextEditingController();
-
-  final UserService _userService = UserService();
 
   @override
   void initState() {
@@ -114,8 +110,7 @@ class _ConfigUrlDbState extends State<ConfigUrlDb> {
                             Navigator.push(
                                 context,
                                 FluentPageRoute(
-                                    builder: (context) =>
-                                        const ConfigUserAdm()));
+                                    builder: (context) => const Login()));
                           }
                         },
                         child: const Text('Salvar Conexão'),

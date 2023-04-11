@@ -1,4 +1,4 @@
-import 'package:arch_box_control/data/models/user_model.dart';
+import 'package:arch_box_control/exceptions/user_adm_exception.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
@@ -13,20 +13,12 @@ class ConfigUserAdm extends StatefulWidget {
 
 class _ConfigUserAdmState extends State<ConfigUserAdm> {
   final SizedBox _vSpacer = const SizedBox(height: 20);
-  final SizedBox _hSpacer = const SizedBox(width: 20);
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
 
-  bool _enableNameField = false;
-  bool _enableEmailField = false;
-  bool _enablePasswordField = false;
-  bool _enableSaveUser = false;
-
   final UserService _userService = UserService();
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +26,7 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
       content: SingleChildScrollView(
         child: Center(
           child: Padding(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,13 +62,6 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                     label: 'Nome completo:',
                     child: TextFormBox(
                       controller: _nameController,
-                      onChanged: (value) {
-                        if (value.isNotEmpty) {
-                          setState(() {
-                            _enableNameField = true;
-                          });
-                        }
-                      },
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
@@ -96,13 +81,6 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                       controller: _emailController,
                       placeholder: 'exemplo@gmail.com',
                       autovalidateMode: AutovalidateMode.always,
-                      onChanged: (value) {
-                        if (value.isNotEmpty) {
-                          setState(() {
-                            _enableEmailField = true;
-                          });
-                        }
-                      },
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'O campo "E-mail" é obrigatório';
@@ -125,13 +103,6 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                       obscureText: true,
                       obscuringCharacter: '◉',
                       autovalidateMode: AutovalidateMode.always,
-                      onChanged: (value) {
-                        if (value.isNotEmpty) {
-                          setState(() {
-                            _enablePasswordField = true;
-                          });
-                        }
-                      },
                       validator: (text) {
                         if (text == null || text.isEmpty) {
                           return 'O campo "Senha" é obrigatório';
@@ -149,27 +120,48 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                   style: ButtonStyle(
                     padding: ButtonState.all(const EdgeInsets.all(8)),
                   ),
-                  onPressed: !_enableNameField &&
-                          !_enableEmailField &&
-                          !_enablePasswordField
-                      ? null
-                      : () {
-                          String name = _nameController.text;
-                          String email = _emailController.text;
-                          String password = _passwordController.text;
-                          const String profile = 'admin';
-                          _userService
-                              .saveNewUser(
-                                name: name,
-                                email: email,
-                                password: password,
-                                profile: profile,
-                              )
-                              .then((value) => Navigator.push(
-                                  context,
-                                  FluentPageRoute(
-                                      builder: (context) => const Login())));
-                        },
+                  onPressed: () async {
+                    String name = _nameController.text;
+                    String email = _emailController.text;
+                    String password = _passwordController.text;
+                    const String profile = 'admin';
+                    try {
+                      await _isUserDataValid(
+                              name: name, email: email, password: password)
+                          .then((value) => {
+                                if (value)
+                                  {
+                                    _userService
+                                        .saveNewUser(
+                                          name: name,
+                                          email: email,
+                                          password: password,
+                                          profile: profile,
+                                        )
+                                        .then(
+                                          (value) => Navigator.push(
+                                            context,
+                                            FluentPageRoute(
+                                              builder: (context) =>
+                                                  const Login(),
+                                            ),
+                                          ),
+                                        )
+                                  }
+                              });
+                    } on NameUserException catch (e) {
+                      //Navigator.of(context).pop();
+                      _showErrorDialog(
+                          title: 'Erro - Nome Usuário', content: e.toString());
+                    } on EmailUserException catch (e) {
+                      //Navigator.of(context).pop();
+                      _showErrorDialog(
+                          title: 'Erro - Email', content: e.toString());
+                    } on PasswordUserException catch (e) {
+                      _showErrorDialog(
+                          title: 'Erro - Senha', content: e.toString());
+                    }
+                  },
                   child: const Text('Salvar Usuário'),
                 ),
                 _vSpacer,
@@ -191,6 +183,42 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
         fontWeight: FontWeight.w600,
         fontSize: 16,
         fontStyle: FontStyle.italic,
+      ),
+    );
+  }
+
+  Future<bool> _isUserDataValid({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    if (name.isEmpty || name == '') {
+      throw NameUserException('Nome do usuário não pode estar em branco!');
+    }
+
+    if (email.isEmpty || email == '') {
+      throw EmailUserException('Email não pode estar em branco!');
+    }
+
+    if (password.isEmpty || password == '') {
+      throw PasswordUserException('Senha não pode estar em branco!');
+    }
+    return true;
+  }
+
+  void _showErrorDialog(
+      {required String title, required String content}) async {
+    await showDialog(
+      context: context,
+      builder: (context) => ContentDialog(
+        title: Text(title),
+        content: Text(content),
+        actions: [
+          FilledButton(
+            child: const Text('Voltar'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
       ),
     );
   }

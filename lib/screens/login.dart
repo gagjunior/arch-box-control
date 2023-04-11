@@ -19,8 +19,8 @@ class _LoginState extends State<Login> {
     _userService.findUsersByProfile('admin').then((value) => {
           if (value.isEmpty)
             {
-              Navigator.push(
-                  context, FluentPageRoute(builder: (context) => const ConfigUserAdm()))
+              Navigator.push(context,
+                  FluentPageRoute(builder: (context) => const ConfigUserAdm()))
             }
         });
   }

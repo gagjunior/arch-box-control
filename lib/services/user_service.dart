@@ -1,6 +1,5 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 
 class UserService {
   final UserRepository _userRepository = UserRepository();

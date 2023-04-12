@@ -38,4 +38,9 @@ class UserModel {
     return UserModel(name, email, password,
         department: department, profile: profile);
   }
+
+  @override
+  String toString() {
+    return toMap.toString();
+  }
 }

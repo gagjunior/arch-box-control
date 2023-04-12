@@ -1,19 +1,17 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 
 class UserRepository {
-  final String _urlDb = ConfigDbService.getDbUrl();
+  static final String _urlDb = ConfigDbService.getDbUrl();
   static const String _collectionName = 'users';
 
   Future<UserModel?> saveNewUser(UserModel user) async {
-    debugPrint(_urlDb);
     Db db = await Db.create(_urlDb);
 
     await db.open();
-    DbCollection usersCollection = db.collection(_collectionName);
-    WriteResult result = await usersCollection.insertOne(user.toMap);
+    WriteResult result =
+        await db.collection(_collectionName).insertOne(user.toMap);
     await db.close();
 
     if (result.isSuccess) {
@@ -29,14 +27,28 @@ class UserRepository {
     List<UserModel> userList = [];
 
     await db.open();
-    DbCollection usersCollection = db.collection(_collectionName);
-    await usersCollection.find(where.eq('profile', profile)).forEach((user) {
+    await db
+        .collection(_collectionName)
+        .find(where.eq('profile', profile))
+        .forEach((user) {
       userList.add(UserModel.toUser(user));
     });
     await db.close();
 
-    debugPrint(userList.length.toString());
-
     return userList;
+  }
+
+  Future<UserModel?> findUserByEmail(String email) async {
+    Db db = await Db.create(_urlDb);
+    await db.open();
+    Map<String, dynamic>? userData =
+        await db.collection(_collectionName).findOne(where.eq('email', email));
+    await db.close();
+
+    if (userData != null) {
+      return UserModel.toUser(userData);
+    }
+
+    return null;
   }
 }

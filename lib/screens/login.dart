@@ -1,7 +1,9 @@
 import 'package:arch_box_control/screens/config_user_adm.dart';
 import 'package:arch_box_control/screens/home.dart';
 import 'package:arch_box_control/services/user_service.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart' as icons;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -11,7 +13,11 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final UserService _userService = UserService();
+
+  bool _showPassword = false;
 
   @override
   void initState() {
@@ -55,12 +61,23 @@ class _LoginState extends State<Login> {
               child: InfoLabel(
                   label: 'E-mail',
                   isHeader: true,
-                  child: const TextBox(
-                    prefix: Padding(
+                  child: TextFormBox(
+                    controller: _emailController,
+                    prefix: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(FluentIcons.mail),
                     ),
                     placeholder: 'exemplo@gmail.com',
+                    autovalidateMode: AutovalidateMode.always,
+                    validator: (text) {
+                      if (text == null || text.isEmpty) {
+                        return 'O campo "E-mail" é obrigatório';
+                      }
+                      if (!EmailValidator.validate(text)) {
+                        return 'E-mail digitado não é válido';
+                      }
+                      return null;
+                    },
                   )),
             ),
           ),
@@ -72,33 +89,71 @@ class _LoginState extends State<Login> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: InfoLabel(
-                label: 'Password',
+                label: 'Senha',
                 isHeader: true,
                 child: TextFormBox(
+                  controller: _passwordController,
                   prefix: const Padding(
                     padding: EdgeInsets.all(8),
                     child: Icon(FluentIcons.password_field),
                   ),
-                  obscureText: true,
-                  obscuringCharacter: '*',
+                  obscureText: !_showPassword,
+                  obscuringCharacter: '◉',
+                  autovalidateMode: AutovalidateMode.always,
+                  validator: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'O campo "Senha" é obrigatório';
+                    }
+                    if (text.length < 8 || text.length > 12) {
+                      return 'A senha deve conter entre 8 e 12 caracteres';
+                    }
+                    return null;
+                  },
+                  suffix: IconButton(
+                    icon: Icon(
+                      !_showPassword
+                          ? icons.FluentIcons.eye_off_16_regular
+                          : icons.FluentIcons.eye_16_regular,
+                      size: 18,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword;
+                      });
+                    },
+                  ),
                 ),
               ),
             ),
           ),
         ),
+        const SizedBox(height: 20),
         Center(
           child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 400),
-            child: FilledButton(
-              child: const Text('Login'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  FluentPageRoute(
-                    builder: (context) => const Home(),
+            constraints: const BoxConstraints(maxWidth: 350),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                style: ButtonStyle(
+                  padding:
+                      ButtonState.all(const EdgeInsets.fromLTRB(0, 10, 0, 10)),
+                ),
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    fontSize: 16,
                   ),
-                );
-              },
+                ),
+                onPressed: () {
+                  
+                  // Navigator.push(
+                  //   context,
+                  //   FluentPageRoute(
+                  //     builder: (context) => const Home(),
+                  //   ),
+                  // );
+                },
+              ),
             ),
           ),
         ),

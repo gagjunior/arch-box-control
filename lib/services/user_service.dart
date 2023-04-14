@@ -25,7 +25,9 @@ class UserService {
     return await _userRepository.saveNewUser(user);
   }
 
-  Future<List<UserModel>> findUsersByProfile(String profile) async {
-    return await _userRepository.findUsersByProfile(profile);
-  }
+  Future<List<UserModel>> findUsersByProfile(String profile) async =>
+      await _userRepository.findUsersByProfile(profile);
+
+  Future<UserModel?> findUserByEmail({required String email}) async =>
+      await _userRepository.findUserByEmail(email);
 }

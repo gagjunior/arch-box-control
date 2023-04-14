@@ -1,6 +1,6 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:arch_box_control/exceptions/user_adm_exception.dart';
 
 class UserService {
   final UserRepository _userRepository = UserRepository();
@@ -14,8 +14,14 @@ class UserService {
   }) async {
     UserModel user = UserModel(name, email, password,
         department: department, profile: profile);
-    UserModel? user2 = await _userRepository.findUserByEmail(email);
-    debugPrint(user2?.toMap.toString());
+    await _userRepository.findUserByEmail(email).then((user) => {
+          if (user != null)
+            {
+              throw EmailUserException(
+                  'Já existe um usuário cadastrado com o e-mail: ${user.email}')
+            }
+        });
+
     return await _userRepository.saveNewUser(user);
   }
 

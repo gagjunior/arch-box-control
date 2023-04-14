@@ -124,43 +124,8 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                     String name = _nameController.text;
                     String email = _emailController.text;
                     String password = _passwordController.text;
-                    const String profile = 'admin';
-                    try {
-                      await _isUserDataValid(
-                              name: name, email: email, password: password)
-                          .then((value) => {
-                                if (value)
-                                  {
-                                    _userService
-                                        .saveNewUser(
-                                          name: name,
-                                          email: email,
-                                          password: password,
-                                          profile: profile,
-                                        )
-                                        .then(
-                                          (value) => Navigator.push(
-                                            context,
-                                            FluentPageRoute(
-                                              builder: (context) =>
-                                                  const Login(),
-                                            ),
-                                          ),
-                                        )
-                                  }
-                              });
-                    } on NameUserException catch (e) {
-                      //Navigator.of(context).pop();
-                      _showErrorDialog(
-                          title: 'Erro - Nome Usuário', content: e.toString());
-                    } on EmailUserException catch (e) {
-                      //Navigator.of(context).pop();
-                      _showErrorDialog(
-                          title: 'Erro - Email', content: e.toString());
-                    } on PasswordUserException catch (e) {
-                      _showErrorDialog(
-                          title: 'Erro - Senha', content: e.toString());
-                    }
+                    await _saveUserAdm(
+                        name: name, email: email, password: password);
                   },
                   child: const Text('Salvar Usuário'),
                 ),
@@ -204,6 +169,45 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
       throw PasswordUserException('Senha não pode estar em branco!');
     }
     return true;
+  }
+
+  Future<void> _saveUserAdm(
+      {required String name,
+      required String email,
+      required String password}) async {
+    const String profile = 'admin';
+    try {
+      await _isUserDataValid(name: name, email: email, password: password)
+          .then((value) => {
+                if (value)
+                  {
+                    _userService
+                        .saveNewUser(
+                            name: name,
+                            email: email,
+                            password: password,
+                            profile: profile)
+                        .then(
+                          (value) => Navigator.push(
+                            context,
+                            FluentPageRoute(
+                              builder: (context) => const Login(),
+                            ),
+                          ),
+                        )
+                        .catchError((error) {
+                      _showErrorDialog(
+                          title: 'Erro - Usuário', content: error.toString());
+                    })
+                  }
+              });
+    } on NameUserException catch (e) {
+      _showErrorDialog(title: 'Erro - Nome Usuário', content: e.toString());
+    } on EmailUserException catch (e) {
+      _showErrorDialog(title: 'Erro - Email', content: e.toString());
+    } on PasswordUserException catch (e) {
+      _showErrorDialog(title: 'Erro - Senha', content: e.toString());
+    }
   }
 
   void _showErrorDialog(

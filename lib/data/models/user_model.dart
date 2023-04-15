@@ -8,16 +8,21 @@ class UserModel {
   UserModel(this._name, this._email, this._password,
       {this.department, this.profile});
 
-  String get name => _name;
+  String get email => _email;
 
+  String get name => _name;
   set name(String name) {
     if (name.isNotEmpty && name != '' && name != ' ') {
       _name = name;
     }
   }
 
-  String get email => _email;
-  set password(String value) => _password = value;
+  String get password => _password;
+  set password(String password) {
+    if (password.isNotEmpty && password != '' && password != ' ') {
+      _password = password;
+    }
+  }
 
   Map<String, dynamic> get toMap {
     return {

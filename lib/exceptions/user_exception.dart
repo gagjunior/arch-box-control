@@ -13,9 +13,7 @@ class EmailUserException implements Exception {
   EmailUserException(this._msg);
 
   @override
-  String toString() {
-    return _msg;
-  }
+  String toString() => _msg;
 }
 
 class PasswordUserException implements Exception {
@@ -23,7 +21,13 @@ class PasswordUserException implements Exception {
   PasswordUserException(this._msg);
 
   @override
-  String toString() {
-    return _msg;
-  }
+  String toString() => _msg;
+}
+
+class NotFoundUserException implements Exception {
+  final String _msg;
+  NotFoundUserException(this._msg);
+
+  @override
+  String toString() => _msg;
 }

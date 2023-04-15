@@ -1,6 +1,6 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
-import 'package:arch_box_control/exceptions/user_adm_exception.dart';
+import 'package:arch_box_control/exceptions/user_exception.dart';
 
 class UserService {
   final UserRepository _userRepository = UserRepository();

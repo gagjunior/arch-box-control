@@ -1,4 +1,4 @@
-import 'package:arch_box_control/exceptions/user_adm_exception.dart';
+import 'package:arch_box_control/exceptions/user_exception.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';

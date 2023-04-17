@@ -15,6 +15,7 @@ void main() async {
   await SystemTheme.accentColor.load();
   await Hive.initFlutter();
   await Hive.openBox('dbSettings', path: dataDir);
+  await Hive.openBox('userInfo', path: dataDir);
 
   runApp(MyApp());
 }

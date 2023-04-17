@@ -1,10 +1,14 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
 import 'package:arch_box_control/exceptions/user_exception.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 class UserService {
   final UserRepository _userRepository = UserRepository();
+  static final Box _boxUserInfo = Hive.box('userInfo');
 
+  // Salva novo usuário na base de dados
   Future<UserModel?> saveNewUser({
     required String name,
     required String email,
@@ -25,9 +29,27 @@ class UserService {
     return await _userRepository.saveNewUser(user);
   }
 
+  // Localiza usuários por perfil
   Future<List<UserModel>> findUsersByProfile(String profile) async =>
       await _userRepository.findUsersByProfile(profile);
 
+  // Localiza usuário por e-mail
   Future<UserModel?> findUserByEmail({required String email}) async =>
       await _userRepository.findUserByEmail(email);
+
+  // Salva localmente usuário logado no sistema
+  Future<void> saveLoggedInUser(UserModel user) async {
+    DateTime dateTime = DateTime.now();
+    await _boxUserInfo.putAll({
+      'loggedUser': {
+        'email': user.email,
+        'name': user.name,
+        'loggedIn': DateFormat("'Login em:' dd/MM/yyyy hh:mm").format(dateTime)
+      }
+    });
+  }
+
+  Future<Map<String, dynamic>> getLoggedUserInfo(){
+    return _boxUserInfo.get('loggedUser');
+  }
 }

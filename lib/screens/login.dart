@@ -181,14 +181,16 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _login({required String email, required String password}) async {
-    await _userService.findUserByEmail(email: email).then((user) => {
+    await _userService.findUserByEmail(email: email).then((user) async => {
           if (user == null)
             {
               throw NotFoundUserException(
                   'Usuário com o e-mail: $email não cadastrado')
             },
           if (user.password != password)
-            {throw PasswordUserException('Senha incorreta!')}
+            {throw PasswordUserException('Senha incorreta!')},
+            
+          await _userService.saveLoggedInUser(user)
         });
   }
 

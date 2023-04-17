@@ -12,7 +12,6 @@ class ConfigDbService {
   }
 
   static void saveConnection(String urlConn) async {
-    debugPrint('$urlConn/archBoxControl');
     await _boxDbSettings.put(_keyDbUrl, '$urlConn/archBoxControl');
   }
 

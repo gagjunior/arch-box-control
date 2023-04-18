@@ -1,3 +1,4 @@
+import 'package:arch_box_control/screens/welcome.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart' as icons;
 
@@ -14,8 +15,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
+      transitionBuilder: (child, animation) =>
+          HorizontalSlidePageTransition(animation: animation, child: child),
       appBar: const NavigationAppBar(
-          title: Text('Arch Box Control'),),
+        title: Text('Arch Box Control'),
+      ),
       pane: NavigationPane(
         displayMode: PaneDisplayMode.auto,
         header: const Text('Menu'),
@@ -35,27 +39,8 @@ class _HomeState extends State<Home> {
         color: Colors.blue.dark,
       ),
       title: const Text('Início'),
-      body: const _NavigationBodyItem(header: 'Início', content: Text('Teste')),
+      body: WelcomeScreen(),
     ),
     PaneItemSeparator(color: Colors.blue.lighter),
   ];
-}
-
-class _NavigationBodyItem extends StatelessWidget {
-  const _NavigationBodyItem({
-    Key? key,
-    this.header,
-    this.content,
-  }) : super(key: key);
-
-  final String? header;
-  final Widget? content;
-
-  @override
-  Widget build(BuildContext context) {
-    return ScaffoldPage.withPadding(
-      header: PageHeader(title: Text(header ?? 'This is a header text')),
-      content: content ?? const SizedBox.shrink(),
-    );
-  }
 }

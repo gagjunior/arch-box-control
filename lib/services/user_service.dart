@@ -49,7 +49,7 @@ class UserService {
     });
   }
 
-  Future<Map<String, dynamic>> getLoggedUserInfo(){
+  static Map<String, dynamic> getLoggedUserInfo() {
     return _boxUserInfo.get('loggedUser');
   }
 }

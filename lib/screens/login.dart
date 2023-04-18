@@ -1,10 +1,9 @@
 import 'package:arch_box_control/exceptions/user_exception.dart';
-import 'package:arch_box_control/screens/config_user_adm.dart';
+import 'package:arch_box_control/screens/config/config_user_adm.dart';
 import 'package:arch_box_control/screens/home.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart' as icons;
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,8 +16,6 @@ class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final UserService _userService = UserService();
-
-  bool _showPassword = false;
 
   @override
   void initState() {
@@ -90,41 +87,17 @@ class _LoginState extends State<Login> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: InfoLabel(
-                label: 'Senha',
-                isHeader: true,
-                child: TextFormBox(
-                  controller: _passwordController,
-                  prefix: const Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Icon(FluentIcons.password_field),
-                  ),
-                  obscureText: !_showPassword,
-                  obscuringCharacter: '◉',
-                  autovalidateMode: AutovalidateMode.always,
-                  validator: (text) {
-                    if (text == null || text.isEmpty) {
-                      return 'O campo "Senha" é obrigatório';
-                    }
-                    if (text.length < 8 || text.length > 12) {
-                      return 'A senha deve conter entre 8 e 12 caracteres';
-                    }
-                    return null;
-                  },
-                  suffix: IconButton(
-                    icon: Icon(
-                      !_showPassword
-                          ? icons.FluentIcons.eye_off_16_regular
-                          : icons.FluentIcons.eye_16_regular,
-                      size: 18,
+                  label: 'Senha',
+                  isHeader: true,
+                  child: PasswordBox(
+                    revealMode: PasswordRevealMode.peekAlways,
+                    controller: _passwordController,
+                    obscuringCharacter: '◉',
+                    leadingIcon: const Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Icon(FluentIcons.password_field),
                     ),
-                    onPressed: () {
-                      setState(() {
-                        _showPassword = !_showPassword;
-                      });
-                    },
-                  ),
-                ),
-              ),
+                  )),
             ),
           ),
         ),
@@ -189,7 +162,6 @@ class _LoginState extends State<Login> {
             },
           if (user.password != password)
             {throw PasswordUserException('Senha incorreta!')},
-            
           await _userService.saveLoggedInUser(user)
         });
   }

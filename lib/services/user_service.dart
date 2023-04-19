@@ -44,7 +44,9 @@ class UserService {
       'loggedUser': {
         'email': user.email,
         'name': user.name,
-        'loggedIn': DateFormat("'Login em:' dd/MM/yyyy hh:mm").format(dateTime)
+        'loggedIn':
+            DateFormat('dd/MM/yyyy HH:mm', Intl.withLocale('pt-BR', () => null))
+                .format(dateTime)
       }
     });
   }

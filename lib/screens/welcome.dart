@@ -1,3 +1,4 @@
+import 'package:arch_box_control/languages/language.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
@@ -13,6 +14,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String name = '';
   String email = '';
   String loggedIn = '';
+
+  var lang = Portuguese();
 
   @override
   void initState() {
@@ -31,7 +34,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       children: [
         Text('Usuário: $name'),
         Text('E-mail: $email'),
-        Text('Login em: $loggedIn')
+        Text('Login em: $loggedIn'),
+        Text(lang.keys['helloWorld'].toString())
       ],
     );
   }

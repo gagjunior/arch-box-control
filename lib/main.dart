@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return FluentApp(
       debugShowCheckedModeBanner: false,
-      title: 'ArchBoxControl',
       home: dbUrlFound ? const Login() : const ConfigUrlDb(),
       theme: FluentThemeData(
         scaffoldBackgroundColor: Colors.white,

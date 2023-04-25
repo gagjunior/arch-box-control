@@ -1,6 +1,7 @@
 import 'package:arch_box_control/languages/language.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:get/get.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -15,7 +16,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String email = '';
   String loggedIn = '';
 
-  var lang = Portuguese();
+  
 
   @override
   void initState() {
@@ -29,13 +30,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return ScaffoldPage.scrollable(
       header: PageHeader(
-        title: Text('Bem Vindo!', style: TextStyle(color: Colors.blue.dark)),
+        title: Text('welcome'.tr, style: TextStyle(color: Colors.blue.dark)),
       ),
       children: [
-        Text('Usuário: $name'),
+        Text('${'user'.tr}: $name'),
         Text('E-mail: $email'),
-        Text('Login em: $loggedIn'),
-        Text(lang.keys['helloWorld'].toString())
+        Text('${'loggedIn'.tr}: $loggedIn'),
+      
       ],
     );
   }

@@ -4,6 +4,7 @@ import 'package:arch_box_control/screens/home.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -69,10 +70,10 @@ class _LoginState extends State<Login> {
                     autovalidateMode: AutovalidateMode.always,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
-                        return 'O campo "E-mail" é obrigatório';
+                        return 'email_required'.tr;
                       }
                       if (!EmailValidator.validate(text)) {
-                        return 'E-mail digitado não é válido';
+                        return 'email_not_valid'.tr;
                       }
                       return null;
                     },
@@ -87,7 +88,7 @@ class _LoginState extends State<Login> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: InfoLabel(
-                  label: 'Senha',
+                  label: 'password'.tr,
                   isHeader: true,
                   child: PasswordBox(
                     revealMode: PasswordRevealMode.peekAlways,
@@ -137,10 +138,10 @@ class _LoginState extends State<Login> {
                                 });
                       } on NotFoundUserException catch (e) {
                         _showErrorDialog(
-                            title: 'Erro - E-mail', content: e.toString());
+                            title: 'E-mail', content: e.toString());
                       } on PasswordUserException catch (e) {
                         _showErrorDialog(
-                            title: 'Erro - Senha', content: e.toString());
+                            title: 'password'.tr, content: e.toString());
                       }
                     }
                   });
@@ -158,10 +159,10 @@ class _LoginState extends State<Login> {
           if (user == null)
             {
               throw NotFoundUserException(
-                  'Usuário com o e-mail: $email não cadastrado')
+                  'email_not_registered'.trParams({'email':email}))
             },
           if (user.password != password)
-            {throw PasswordUserException('Senha incorreta!')},
+            {throw PasswordUserException('password_not_valid'.tr)},
           await _userService.saveLoggedInUser(user)
         });
   }
@@ -170,12 +171,12 @@ class _LoginState extends State<Login> {
       {required String email, required String password}) async {
     if (email.isEmpty) {
       await _showErrorDialog(
-          title: 'Erro - E-mail', content: 'O campo e-mail é obrigatório');
+          title: 'E-mail', content: 'email_required'.tr);
       return false;
     }
     if (password.isEmpty) {
       await _showErrorDialog(
-          title: 'Erro - Senha', content: 'O campo senha é obrigatório');
+          title: 'Senha', content: 'password_required'.tr);
       return false;
     }
 
@@ -191,7 +192,7 @@ class _LoginState extends State<Login> {
         content: Text(content),
         actions: [
           FilledButton(
-            child: const Text('Voltar'),
+            child: Text('back'.tr),
             onPressed: () => Navigator.pop(context),
           ),
         ],

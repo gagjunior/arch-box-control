@@ -17,6 +17,7 @@ class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final UserService _userService = UserService();
+  String? selectedCat;
 
   @override
   void initState() {
@@ -32,6 +33,25 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
+    Map<String, String> languages = {};
+
+    for (var element in context.supportedLocales) {
+
+      switch (element.languageCode){
+        case 'pt_BR': {
+          languages.addAll(
+            {element.languageCode: 'Portugues Brasil'});
+        } break;
+        case 'en_US': {
+          languages.addAll(
+            {element.languageCode: 'Inglês US'}
+          );
+        }
+      }
+
+    }
+
     return ScaffoldPage.scrollable(
       children: [
         const SizedBox(height: 30),
@@ -150,6 +170,15 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
+        const SizedBox(height: 30),
+        Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 400),
+            child: const Padding(
+              padding: EdgeInsets.all(8),
+            ),
+          ),
+        )
       ],
     );
   }
@@ -199,3 +228,4 @@ class _LoginState extends State<Login> {
     );
   }
 }
+

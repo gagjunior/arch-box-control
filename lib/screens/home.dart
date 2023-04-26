@@ -1,5 +1,6 @@
 import 'package:arch_box_control/screens/users/user_home.dart';
 import 'package:arch_box_control/screens/welcome.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart' as icons;
 
@@ -16,12 +17,12 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return NavigationView(
-      appBar: NavigationAppBar(),
+      appBar: const NavigationAppBar(),
       transitionBuilder: (child, animation) =>
           HorizontalSlidePageTransition(animation: animation, child: child),
       pane: NavigationPane(
-        displayMode: PaneDisplayMode.auto,
-        header: Text('Menu'),
+        displayMode: PaneDisplayMode.compact,
+        header: const Text('Menu'),
         selected: _currentPage,
         onChanged: (i) => setState(() {
           _currentPage = i;
@@ -37,7 +38,7 @@ class _HomeState extends State<Home> {
         icons.FluentIcons.home_16_filled,
         color: Colors.blue.dark,
       ),
-      title: const Text('Início'),
+      title: Text('home'.tr()),
       body: const WelcomeScreen(),
     ),
     PaneItemSeparator(color: Colors.blue.lighter),
@@ -46,7 +47,7 @@ class _HomeState extends State<Home> {
         icons.FluentIcons.people_16_filled,
         color: Colors.blue.dark,
       ),
-      title: const Text('Usuários'),
+      title: Text('user'.plural(3)),
       body: const UserHomeScreen(),
     ),
   ];

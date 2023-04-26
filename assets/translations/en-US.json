@@ -1,0 +1,20 @@
+{
+  "home": "Home",
+  "welcome": "Welcome!",
+  "user": {
+    "zero": "User",
+    "one": "User",
+    "many": "Users",
+    "other": "User"
+  },
+  "pl_user": "Users",
+  "name": "Name",
+  "loggedIn": "Logged in",
+  "back": "Back",
+  "password": "Password",
+  "password_not_valid": "Incorrect password",
+  "password_required": "Password is required",
+  "email_required": "E-mail is required",
+  "email_not_valid": "E-mail entered is not valid",
+  "email_not_registered": "User with email {} not registered"
+}

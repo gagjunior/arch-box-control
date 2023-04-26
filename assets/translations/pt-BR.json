@@ -1,0 +1,19 @@
+{
+  "home": "Início",
+  "welcome": "Bem vindo!",
+  "user": {
+    "zero": "Usuário",
+    "one": "Usuário",
+    "many": "Usuários",
+    "other": "Usuários"
+  },
+  "name": "Nome",
+  "loggedIn": "Acesso em",
+  "back": "Voltar",
+  "password": "Senha",
+  "password_not_valid": "Senha incorreta",
+  "password_required": "O campo senha é obrigatório",
+  "email_required": "O campo 'E-mail' é obrigatório",
+  "email_not_valid": "E-mail digitado não é válido",
+  "email_not_registered": "Usuário com o e-mail: {} não cadastrado"
+}

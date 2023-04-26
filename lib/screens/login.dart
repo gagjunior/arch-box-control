@@ -2,9 +2,9 @@ import 'package:arch_box_control/exceptions/user_exception.dart';
 import 'package:arch_box_control/screens/config/config_user_adm.dart';
 import 'package:arch_box_control/screens/home.dart';
 import 'package:arch_box_control/services/user_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -70,10 +70,10 @@ class _LoginState extends State<Login> {
                     autovalidateMode: AutovalidateMode.always,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
-                        return 'email_required'.tr;
+                        return 'email_required'.tr();
                       }
                       if (!EmailValidator.validate(text)) {
-                        return 'email_not_valid'.tr;
+                        return 'email_not_valid'.tr();
                       }
                       return null;
                     },
@@ -88,7 +88,7 @@ class _LoginState extends State<Login> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: InfoLabel(
-                  label: 'password'.tr,
+                  label: 'password'.tr(),
                   isHeader: true,
                   child: PasswordBox(
                     revealMode: PasswordRevealMode.peekAlways,
@@ -141,7 +141,7 @@ class _LoginState extends State<Login> {
                             title: 'E-mail', content: e.toString());
                       } on PasswordUserException catch (e) {
                         _showErrorDialog(
-                            title: 'password'.tr, content: e.toString());
+                            title: 'password'.tr(), content: e.toString());
                       }
                     }
                   });
@@ -159,10 +159,10 @@ class _LoginState extends State<Login> {
           if (user == null)
             {
               throw NotFoundUserException(
-                  'email_not_registered'.trParams({'email':email}))
+                  'email_not_registered'.tr(args: [email]))
             },
           if (user.password != password)
-            {throw PasswordUserException('password_not_valid'.tr)},
+            {throw PasswordUserException('password_not_valid'.tr())},
           await _userService.saveLoggedInUser(user)
         });
   }
@@ -170,13 +170,12 @@ class _LoginState extends State<Login> {
   Future<bool> _validateData(
       {required String email, required String password}) async {
     if (email.isEmpty) {
-      await _showErrorDialog(
-          title: 'E-mail', content: 'email_required'.tr);
+      await _showErrorDialog(title: 'E-mail', content: 'email_required'.tr());
       return false;
     }
     if (password.isEmpty) {
       await _showErrorDialog(
-          title: 'Senha', content: 'password_required'.tr);
+          title: 'password'.tr(), content: 'password_required'.tr());
       return false;
     }
 
@@ -192,7 +191,7 @@ class _LoginState extends State<Login> {
         content: Text(content),
         actions: [
           FilledButton(
-            child: Text('back'.tr),
+            child: Text('back'.tr()),
             onPressed: () => Navigator.pop(context),
           ),
         ],

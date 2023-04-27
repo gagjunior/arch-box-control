@@ -13,11 +13,13 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+
 class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final UserService _userService = UserService();
   String? selectedCat;
+  List<String> languages = [];
 
   @override
   void initState() {
@@ -32,25 +34,10 @@ class _LoginState extends State<Login> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
 
-    Map<String, String> languages = {};
 
-    for (var element in context.supportedLocales) {
-
-      switch (element.languageCode){
-        case 'pt_BR': {
-          languages.addAll(
-            {element.languageCode: 'Portugues Brasil'});
-        } break;
-        case 'en_US': {
-          languages.addAll(
-            {element.languageCode: 'Inglês US'}
-          );
-        }
-      }
-
-    }
+    debugPrint(context.supportedLocales.toString());
 
     return ScaffoldPage.scrollable(
       children: [
@@ -170,15 +157,32 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 50),
         Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),
-            child: const Padding(
-              padding: EdgeInsets.all(8),
-            ),
+            child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: InfoLabel(
+                  label: 'Idioma',
+                  child: ComboBox<String>(
+                    isExpanded: true,
+                    value: selectedCat,
+                    items: languages.map<ComboBoxItem<String>>((e) {
+                      return ComboBoxItem<String>(
+                        value: e,
+                        child: Text(e),
+                      );
+                    }).toList(),
+                    onChanged: (color) {
+                      setState(() => selectedCat = color);
+                    },
+                    placeholder: const Text('Select a cat breed'),
+                  ),
+                )),
           ),
-        )
+        ),
+        const SizedBox(height: 20),
       ],
     );
   }
@@ -227,5 +231,6 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-}
 
+  List<String> cats = ['Portugues - Brasil', 'Inglês - US'];
+}

@@ -1,10 +1,11 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
 import 'package:arch_box_control/exceptions/user_exception.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
-class UserService {
+class UserService extends GetxService {
   final UserRepository _userRepository = UserRepository();
   static final Box _boxUserInfo = Hive.box('userInfo');
 

@@ -1,10 +1,12 @@
 import 'package:arch_box_control/exceptions/user_exception.dart';
 import 'package:arch_box_control/screens/config/config_user_adm.dart';
+import 'package:arch_box_control/screens/controllers/login_controller.dart';
 import 'package:arch_box_control/screens/home.dart';
 import 'package:arch_box_control/services/user_service.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:get/get.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -14,15 +16,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final UserService _userService = UserService();
-  Locale? selectedLang;
+  //Locale? selectedLang;
+  final UserService service = Get.put(UserService());
+  final LoginController controller = Get.put(LoginController());
 
   @override
   void initState() {
     super.initState();
-    _userService.findUsersByProfile('admin').then((value) => {
+    service.findUsersByProfile('admin').then((value) => {
           if (value.isEmpty)
             {
               Navigator.push(context,
@@ -62,7 +63,7 @@ class _LoginState extends State<Login> {
                   label: 'E-mail',
                   isHeader: true,
                   child: TextFormBox(
-                    controller: _emailController,
+                    controller: controller.emailController,
                     prefix: const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(FluentIcons.mail),
@@ -71,10 +72,10 @@ class _LoginState extends State<Login> {
                     autovalidateMode: AutovalidateMode.always,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
-                        return 'email_required'.tr();
+                        return easy.tr('email_required');
                       }
                       if (!EmailValidator.validate(text)) {
-                        return 'email_not_valid'.tr();
+                        return easy.tr('email_not_valid');
                       }
                       return null;
                     },
@@ -89,11 +90,11 @@ class _LoginState extends State<Login> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: InfoLabel(
-                  label: 'password'.tr(),
+                  label: easy.tr('password'),
                   isHeader: true,
                   child: PasswordBox(
                     revealMode: PasswordRevealMode.peekAlways,
-                    controller: _passwordController,
+                    controller: controller.passwordController,
                     obscuringCharacter: '◉',
                     leadingIcon: const Padding(
                       padding: EdgeInsets.all(8),
@@ -121,8 +122,8 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 onPressed: () async {
-                  String email = _emailController.text;
-                  String password = _passwordController.text;
+                  String email = controller.emailController.text;
+                  String password = controller.passwordController.text;
 
                   await _validateData(email: email, password: password)
                       .then((isValid) async {
@@ -142,7 +143,7 @@ class _LoginState extends State<Login> {
                             title: 'E-mail', content: e.toString());
                       } on PasswordUserException catch (e) {
                         _showErrorDialog(
-                            title: 'password'.tr(), content: e.toString());
+                            title: easy.tr('password'), content: e.toString());
                       }
                     }
                   });
@@ -158,26 +159,28 @@ class _LoginState extends State<Login> {
             child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: InfoLabel(
-                  label: 'language'.tr(),
+                  label: easy.tr('language'),
                   child: ComboBox<Locale>(
                     isExpanded: true,
-                    value: selectedLang,
+                    value: controller.selectedLang,
                     items:
                         context.supportedLocales.map<ComboBoxItem<Locale>>((e) {
                       return ComboBoxItem<Locale>(
                         value: e,
-                        child: Text(e.toString().tr()),
+                        child: Text(easy.tr(e.toString())),
                       );
                     }).toList(),
                     onChanged: (lang) {
                       setState(() {
-                        selectedLang = lang;
+                        controller.selectedLang = lang;
                         context.setLocale(lang!);
                       });
                     },
-                    placeholder: Text(selectedLang != null
-                        ? selectedLang.toString()
-                        : 'select_lang'.tr()),
+                    placeholder: Text(
+                      selectedLang != null
+                          ? selectedLang.toString()
+                          : easy.tr('select_lang'),
+                    ),
                   ),
                 )),
           ),
@@ -188,27 +191,28 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _login({required String email, required String password}) async {
-    await _userService.findUserByEmail(email: email).then((user) async => {
+    await service.findUserByEmail(email: email).then((user) async => {
           if (user == null)
             {
               throw NotFoundUserException(
-                  'email_not_registered'.tr(args: [email]))
+                  easy.tr('email_not_registered', args: [email]))
             },
           if (user.password != password)
-            {throw PasswordUserException('password_not_valid'.tr())},
-          await _userService.saveLoggedInUser(user)
+            {throw PasswordUserException(easy.tr('password_not_valid'))},
+          await service.saveLoggedInUser(user)
         });
   }
 
   Future<bool> _validateData(
       {required String email, required String password}) async {
     if (email.isEmpty) {
-      await _showErrorDialog(title: 'E-mail', content: 'email_required'.tr());
+      await _showErrorDialog(
+          title: 'E-mail', content: easy.tr('email_required'));
       return false;
     }
     if (password.isEmpty) {
       await _showErrorDialog(
-          title: 'password'.tr(), content: 'password_required'.tr());
+          title: easy.tr('password'), content: easy.tr('password_required'));
       return false;
     }
 
@@ -224,7 +228,7 @@ class _LoginState extends State<Login> {
         content: Text(content),
         actions: [
           FilledButton(
-            child: Text('back'.tr()),
+            child: Text(easy.tr('back')),
             onPressed: () => Navigator.pop(context),
           ),
         ],

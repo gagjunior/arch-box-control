@@ -1,4 +1,3 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ConfigDbService {

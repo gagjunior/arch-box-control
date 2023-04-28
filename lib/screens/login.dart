@@ -160,7 +160,7 @@ class _LoginState extends State<Login> {
                 padding: const EdgeInsets.all(8),
                 child: InfoLabel(
                   label: easy.tr('language'),
-                  child: ComboBox<Locale>(
+                  child: Obx(() => ComboBox<Locale>(
                     isExpanded: true,
                     value: controller.selectedLang,
                     items:
@@ -177,11 +177,11 @@ class _LoginState extends State<Login> {
                       });
                     },
                     placeholder: Text(
-                      selectedLang != null
-                          ? selectedLang.toString()
+                      controller.selectedLang != null
+                          ? controller.selectedLang.toString()
                           : easy.tr('select_lang'),
                     ),
-                  ),
+                  ),)
                 )),
           ),
         ),

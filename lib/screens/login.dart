@@ -13,13 +13,11 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
-
 class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final UserService _userService = UserService();
-  String? selectedCat;
-  List<String> languages = [];
+  Locale? selectedLang;
 
   @override
   void initState() {
@@ -34,11 +32,7 @@ class _LoginState extends State<Login> {
   }
 
   @override
-  Widget build(BuildContext context) {    
-
-
-    debugPrint(context.supportedLocales.toString());
-
+  Widget build(BuildContext context) {
     return ScaffoldPage.scrollable(
       children: [
         const SizedBox(height: 30),
@@ -164,20 +158,26 @@ class _LoginState extends State<Login> {
             child: Padding(
                 padding: const EdgeInsets.all(8),
                 child: InfoLabel(
-                  label: 'Idioma',
-                  child: ComboBox<String>(
+                  label: 'language'.tr(),
+                  child: ComboBox<Locale>(
                     isExpanded: true,
-                    value: selectedCat,
-                    items: languages.map<ComboBoxItem<String>>((e) {
-                      return ComboBoxItem<String>(
+                    value: selectedLang,
+                    items:
+                        context.supportedLocales.map<ComboBoxItem<Locale>>((e) {
+                      return ComboBoxItem<Locale>(
                         value: e,
-                        child: Text(e),
+                        child: Text(e.toString().tr()),
                       );
                     }).toList(),
-                    onChanged: (color) {
-                      setState(() => selectedCat = color);
+                    onChanged: (lang) {
+                      setState(() {
+                        selectedLang = lang;
+                        context.setLocale(lang!);
+                      });
                     },
-                    placeholder: const Text('Select a cat breed'),
+                    placeholder: Text(selectedLang != null
+                        ? selectedLang.toString()
+                        : 'select_lang'.tr()),
                   ),
                 )),
           ),
@@ -231,6 +231,4 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-
-  List<String> cats = ['Portugues - Brasil', 'Inglês - US'];
 }

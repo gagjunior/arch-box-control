@@ -16,5 +16,9 @@
   "password_required": "Password is required",
   "email_required": "E-mail is required",
   "email_not_valid": "E-mail entered is not valid",
-  "email_not_registered": "User with email {} not registered"
+  "email_not_registered": "User with email {} not registered",
+  "pt_BR": "Portuguese - Brazil",
+  "en_US": "English - US",
+  "language": "Language",
+  "select_lang": "Select the language"
 }

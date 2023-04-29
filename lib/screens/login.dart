@@ -4,25 +4,17 @@ import 'package:arch_box_control/screens/controllers/login_controller.dart';
 import 'package:arch_box_control/screens/home.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
-import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+final UserService service = Get.put(UserService());
+final LoginController controller = Get.put(LoginController());
+
+class Login extends StatelessWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-  //Locale? selectedLang;
-  final UserService service = Get.put(UserService());
-  final LoginController controller = Get.put(LoginController());
-
-  @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
     service.findUsersByProfile('admin').then((value) => {
           if (value.isEmpty)
             {
@@ -30,13 +22,10 @@ class _LoginState extends State<Login> {
                   FluentPageRoute(builder: (context) => const ConfigUserAdm()))
             }
         });
-  }
 
-  @override
-  Widget build(BuildContext context) {
     return ScaffoldPage.scrollable(
       children: [
-        const SizedBox(height: 30),
+        const SizedBox(height: 40),
         const FlutterLogo(
           size: 100,
         ),
@@ -69,12 +58,12 @@ class _LoginState extends State<Login> {
                       child: Icon(FluentIcons.mail),
                     ),
                     placeholder: 'exemplo@gmail.com',
-                    autovalidateMode: AutovalidateMode.always,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (text) {
                       if (text == null || text.isEmpty) {
                         return easy.tr('email_required');
                       }
-                      if (!EmailValidator.validate(text)) {
+                      if (!GetUtils.isEmail(text)) {
                         return easy.tr('email_not_valid');
                       }
                       return null;
@@ -125,7 +114,8 @@ class _LoginState extends State<Login> {
                   String email = controller.emailController.text;
                   String password = controller.passwordController.text;
 
-                  await _validateData(email: email, password: password)
+                  await _validateData(
+                          context: context, email: email, password: password)
                       .then((isValid) async {
                     if (isValid) {
                       try {
@@ -140,10 +130,14 @@ class _LoginState extends State<Login> {
                                 });
                       } on NotFoundUserException catch (e) {
                         _showErrorDialog(
-                            title: 'E-mail', content: e.toString());
+                            context: context,
+                            title: 'E-mail',
+                            content: e.toString());
                       } on PasswordUserException catch (e) {
                         _showErrorDialog(
-                            title: easy.tr('password'), content: e.toString());
+                            context: context,
+                            title: easy.tr('password'),
+                            content: e.toString());
                       }
                     }
                   });
@@ -157,12 +151,13 @@ class _LoginState extends State<Login> {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),
             child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: InfoLabel(
-                  label: easy.tr('language'),
-                  child: Obx(() => ComboBox<Locale>(
+              padding: const EdgeInsets.all(8),
+              child: InfoLabel(
+                label: easy.tr('language'),
+                child: Obx(
+                  () => ComboBox<Locale>(
                     isExpanded: true,
-                    value: controller.selectedLang,
+                    value: context.locale.obs.value,
                     items:
                         context.supportedLocales.map<ComboBoxItem<Locale>>((e) {
                       return ComboBoxItem<Locale>(
@@ -171,18 +166,13 @@ class _LoginState extends State<Login> {
                       );
                     }).toList(),
                     onChanged: (lang) {
-                      setState(() {
-                        controller.selectedLang = lang;
-                        context.setLocale(lang!);
-                      });
+                      context.setLocale(lang!);
                     },
-                    placeholder: Text(
-                      controller.selectedLang != null
-                          ? controller.selectedLang.toString()
-                          : easy.tr('select_lang'),
-                    ),
-                  ),)
-                )),
+                    placeholder: Text(easy.tr(context.locale.toString())),
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 20),
@@ -190,6 +180,7 @@ class _LoginState extends State<Login> {
     );
   }
 
+  // Verifica usuário e senha
   Future<void> _login({required String email, required String password}) async {
     await service.findUserByEmail(email: email).then((user) async => {
           if (user == null)
@@ -199,20 +190,27 @@ class _LoginState extends State<Login> {
             },
           if (user.password != password)
             {throw PasswordUserException(easy.tr('password_not_valid'))},
-          await service.saveLoggedInUser(user)
+          await service.saveLoggedInUser(user: user)
         });
   }
 
+  // Valida os dados informados no login
   Future<bool> _validateData(
-      {required String email, required String password}) async {
+      {required BuildContext context,
+      required String email,
+      required String password}) async {
     if (email.isEmpty) {
       await _showErrorDialog(
-          title: 'E-mail', content: easy.tr('email_required'));
+          context: context,
+          title: 'E-mail',
+          content: easy.tr('email_required'));
       return false;
     }
     if (password.isEmpty) {
       await _showErrorDialog(
-          title: easy.tr('password'), content: easy.tr('password_required'));
+          context: context,
+          title: easy.tr('password'),
+          content: easy.tr('password_required'));
       return false;
     }
 
@@ -220,7 +218,9 @@ class _LoginState extends State<Login> {
   }
 
   Future<void> _showErrorDialog(
-      {required String title, required String content}) async {
+      {required BuildContext context,
+      required String title,
+      required String content}) async {
     await showDialog(
       context: context,
       builder: (context) => ContentDialog(

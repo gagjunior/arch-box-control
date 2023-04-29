@@ -4,6 +4,11 @@ import 'package:get/get.dart';
 class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  Locale? selectedLang = Locale('pt', 'BR').obs as Locale;
 
+  Rx<Locale?> selectedLang = Locale('pt', 'BR').obs;
+
+  Locale? changeLang(Locale? locale) {
+    selectedLang.value = locale;
+    return selectedLang.value;
+  }
 }

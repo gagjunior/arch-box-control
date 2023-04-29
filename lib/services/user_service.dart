@@ -1,6 +1,8 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
 import 'package:arch_box_control/exceptions/user_exception.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +41,7 @@ class UserService extends GetxService {
       await _userRepository.findUserByEmail(email);
 
   // Salva localmente usuário logado no sistema
-  Future<void> saveLoggedInUser(UserModel user) async {
+  Future<void> saveLoggedInUser({required UserModel user}) async {
     DateTime dateTime = DateTime.now();
     await _boxUserInfo.putAll({
       'loggedUser': {

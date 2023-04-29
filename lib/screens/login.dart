@@ -1,27 +1,19 @@
 import 'package:arch_box_control/exceptions/user_exception.dart';
-import 'package:arch_box_control/screens/config/config_user_adm.dart';
+import 'package:arch_box_control/screens/components/dialogs.dart';
 import 'package:arch_box_control/screens/controllers/login_controller.dart';
 import 'package:arch_box_control/screens/home.dart';
-import 'package:arch_box_control/services/user_service.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
-
-final UserService service = Get.put(UserService());
-final LoginController controller = Get.put(LoginController());
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    service.findUsersByProfile('admin').then((value) => {
-          if (value.isEmpty)
-            {
-              Navigator.push(context,
-                  FluentPageRoute(builder: (context) => const ConfigUserAdm()))
-            }
-        });
+    final LoginController controller = Get.put(LoginController());
+
+    controller.findUserAdm(context);
 
     return ScaffoldPage.scrollable(
       children: [
@@ -114,12 +106,14 @@ class Login extends StatelessWidget {
                   String email = controller.emailController.text;
                   String password = controller.passwordController.text;
 
-                  await _validateData(
+                  await controller
+                      .validateData(
                           context: context, email: email, password: password)
                       .then((isValid) async {
                     if (isValid) {
                       try {
-                        await _login(email: email, password: password)
+                        await controller
+                            .login(email: email, password: password)
                             .then((value) => {
                                   Navigator.push(
                                     context,
@@ -129,12 +123,12 @@ class Login extends StatelessWidget {
                                   )
                                 });
                       } on NotFoundUserException catch (e) {
-                        _showErrorDialog(
+                        showErrorDialog(
                             context: context,
                             title: 'E-mail',
                             content: e.toString());
                       } on PasswordUserException catch (e) {
-                        _showErrorDialog(
+                        showErrorDialog(
                             context: context,
                             title: easy.tr('password'),
                             content: e.toString());
@@ -177,62 +171,6 @@ class Login extends StatelessWidget {
         ),
         const SizedBox(height: 20),
       ],
-    );
-  }
-
-  // Verifica usuário e senha
-  Future<void> _login({required String email, required String password}) async {
-    await service.findUserByEmail(email: email).then((user) async => {
-          if (user == null)
-            {
-              throw NotFoundUserException(
-                  easy.tr('email_not_registered', args: [email]))
-            },
-          if (user.password != password)
-            {throw PasswordUserException(easy.tr('password_not_valid'))},
-          await service.saveLoggedInUser(user: user)
-        });
-  }
-
-  // Valida os dados informados no login
-  Future<bool> _validateData(
-      {required BuildContext context,
-      required String email,
-      required String password}) async {
-    if (email.isEmpty) {
-      await _showErrorDialog(
-          context: context,
-          title: 'E-mail',
-          content: easy.tr('email_required'));
-      return false;
-    }
-    if (password.isEmpty) {
-      await _showErrorDialog(
-          context: context,
-          title: easy.tr('password'),
-          content: easy.tr('password_required'));
-      return false;
-    }
-
-    return true;
-  }
-
-  Future<void> _showErrorDialog(
-      {required BuildContext context,
-      required String title,
-      required String content}) async {
-    await showDialog(
-      context: context,
-      builder: (context) => ContentDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          FilledButton(
-            child: Text(easy.tr('back')),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-      ),
     );
   }
 }

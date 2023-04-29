@@ -57,11 +57,4 @@ class LoginController extends GetxController {
 
     return true;
   }
-
-  // Rx<Locale?> selectedLang = const Locale('pt', 'BR').obs;
-  //
-  // Locale? changeLang(Locale? locale) {
-  //   selectedLang.value = locale;
-  //   return selectedLang.value;
-  // }
 }

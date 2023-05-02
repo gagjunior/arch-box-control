@@ -8,10 +8,18 @@ Future<void> showErrorDialog(
   await showDialog(
     context: context,
     builder: (context) => ContentDialog(
-      title: Text(title),
-      content: Text(content),
-      style: ContentDialogThemeData(
-        titleStyle: TextStyle(color: Colors.red.dark),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 24,
+          color: Colors.red.dark,
+        ),
+      ),
+      content: Text(
+        content,
+        style: const TextStyle(
+          fontSize: 16,
+        ),
       ),
       actions: [
         FilledButton(

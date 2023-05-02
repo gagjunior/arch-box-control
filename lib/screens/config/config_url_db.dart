@@ -1,28 +1,31 @@
+import 'package:arch_box_control/screens/components/dialogs.dart';
+import 'package:arch_box_control/screens/controllers/config_url_controller.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:get/get.dart';
 
-class ConfigUrlDb extends StatefulWidget {
+// @override
+// void initState() {
+//   super.initState();
+//   if (ConfigDbService.dbUrlFound()) {
+//     _urlConnController.text = ConfigDbService.getDbUrl();
+//   }
+// }
+
+class ConfigUrlDb extends StatelessWidget {
   const ConfigUrlDb({super.key});
-
-  @override
-  State<ConfigUrlDb> createState() => _ConfigUrlDbState();
-}
-
-class _ConfigUrlDbState extends State<ConfigUrlDb> {
   final SizedBox _vSpacer = const SizedBox(height: 20);
-  final TextEditingController _urlConnController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    if (ConfigDbService.dbUrlFound()) {
-      _urlConnController.text = ConfigDbService.getDbUrl();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+    final ConfigUrlDbController controller = Get.put(ConfigUrlDbController());
+
+    if (ConfigDbService.dbUrlFound()) {
+      controller.urlConnController.text = ConfigDbService.getDbUrl();
+    }
+
     return ScaffoldPage(
       content: SingleChildScrollView(
         child: Center(
@@ -33,7 +36,7 @@ class _ConfigUrlDbState extends State<ConfigUrlDb> {
               children: [
                 _vSpacer,
                 Text(
-                  'Configuração da Base de Dados',
+                  easy.tr('database_configuration'),
                   softWrap: true,
                   style: TextStyle(
                     color: Colors.blue.dark,
@@ -41,20 +44,21 @@ class _ConfigUrlDbState extends State<ConfigUrlDb> {
                   ),
                 ),
                 _vSpacer,
-                _subTitle('URL de Conexão Banco de Dados'),
+                _subTitle(easy.tr('database_connection_url')),
                 SelectableText.rich(
                   TextSpan(
-                    text: 'O aplicativo ',
+                    text: easy.tr('db_config_ln_01'),
                     children: [
                       TextSpan(
                           text: 'ArchBoxControl ',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.blue.dark)),
-                      const TextSpan(text: 'utiliza como base de dados o '),
-                      const TextSpan(
-                          text: 'MongoDb.',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(text: easy.tr('db_config_ln_01a')),
+                      TextSpan(
+                        text: easy.tr('db_config_ln_01b'),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       const TextSpan(
                           text: '\nVocê pode configurar um banco de dados '),
                       const TextSpan(
@@ -78,7 +82,7 @@ class _ConfigUrlDbState extends State<ConfigUrlDb> {
                   child: InfoLabel(
                     label: 'URL de conexão',
                     child: TextFormBox(
-                      controller: _urlConnController,
+                      controller: controller.urlConnController,
                       autofocus: true,
                       placeholder: 'mongodb://localhost:27017',
                       autovalidateMode: AutovalidateMode.always,
@@ -101,12 +105,16 @@ class _ConfigUrlDbState extends State<ConfigUrlDb> {
                           padding: ButtonState.all(const EdgeInsets.all(8)),
                         ),
                         onPressed: () async {
-                          String urlConn = _urlConnController.text;
+                          String urlConn = controller.urlConnController.text;
                           if (urlConn.isEmpty || urlConn == '') {
-                            showContentDialog(context);
+                            showErrorDialog(
+                                context: context,
+                                title: 'Erro - URL de Conexão',
+                                content:
+                                    'A URL de conexão com a base de dados não pode estar em branco! Favor verificar.');
                           } else {
                             ConfigDbService.saveConnection(
-                                _urlConnController.text);
+                                controller.urlConnController.text);
                             Navigator.push(
                                 context,
                                 FluentPageRoute(
@@ -139,24 +147,5 @@ class _ConfigUrlDbState extends State<ConfigUrlDb> {
         fontStyle: FontStyle.italic,
       ),
     );
-  }
-
-  void showContentDialog(BuildContext context) async {
-    await showDialog(
-      context: context,
-      builder: (context) => ContentDialog(
-        title: const Text('Erro - URL de Conexão'),
-        content: const Text(
-          'A URL de conexão com a base de dados não pode estar em branco! Favor verificar.',
-        ),
-        actions: [
-          FilledButton(
-            child: const Text('Voltar'),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
-      ),
-    );
-    setState(() {});
   }
 }

@@ -41,7 +41,8 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home: dbUrlFound ? const Login() : const ConfigUrlDb(),
+      home:
+          const ConfigUrlDb(), //dbUrlFound ? const Login() : const ConfigUrlDb(),
       theme: FluentThemeData(
         scaffoldBackgroundColor: Colors.white,
         accentColor: SystemTheme.accentColor.accent.toAccentColor(),

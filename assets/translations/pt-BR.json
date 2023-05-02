@@ -19,5 +19,10 @@
   "pt_BR": "Português - Brasil",
   "en_US": "Inglês - US",
   "language": "Idioma",
-  "select_lang": "Selecione o idioma"
+  "select_lang": "Selecione o idioma",
+  "database_configuration": "Configuração da Base de Dados",
+  "database_connection_url": "URL de Conexão com Banco de Dados",
+  "db_config_ln_01": "O aplicativo ",
+  "db_config_ln_01a": "utiliza como base de dados o ",
+  "db_config_ln_01b": "MongoDb."
 }

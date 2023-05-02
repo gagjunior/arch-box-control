@@ -24,5 +24,13 @@
   "database_connection_url": "URL de Conexão com Banco de Dados",
   "db_config_ln_01": "O aplicativo ",
   "db_config_ln_01a": "utiliza como base de dados o ",
-  "db_config_ln_01b": "MongoDb."
+  "db_config_ln_01b": "MongoDb.",
+  "db_config_ln_02a": "\nVocê pode configurar um banco de dados ",
+  "db_config_ln_02b": "ou em nuvem com o ",
+  "db_config_ln_03a": "\nPara isso, é só informar a URL de conexão no campo abaixo.",
+  "db_config_ln_04a": "Caso seja necessário conectar com o MongoDB hospedado em outro serviço de nuvem, favor contactar o suporte.",
+  "save_conn": "Salvar Conexão",
+  "connection_url": "URL de conexão",
+  "mandatory_url": "É obrigatório digitar a URL de conexão com o banco de dados.",
+  "empty_connection_url": "A URL de conexão com a base de dados não pode estar em branco! Favor verificar."
 }

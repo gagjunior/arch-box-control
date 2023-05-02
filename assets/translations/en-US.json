@@ -25,5 +25,13 @@
   "database_connection_url": "Database Connection URL",
   "db_config_ln_01": "",
   "db_config_ln_01a": "application uses ",
-  "db_config_ln_01b": "MongoDb as a database."
+  "db_config_ln_01b": "MongoDb as a database.",
+  "db_config_ln_02a": "\nYou can set up a ",
+  "db_config_ln_02b": "or Cloud database with ",
+  "db_config_ln_03a": "\nTo do this, just enter the connection URL in the field below.",
+  "db_config_ln_04a": "If you need to connect with MongoDB hosted on another cloud service, please contact support.",
+  "save_conn": "Save Connection",
+  "connection_url": "Connection URL",
+  "mandatory_url": "It is mandatory to enter the database connection URL.",
+  "empty_connection_url": "The database connection URL cannot be blank! Please check."
 }

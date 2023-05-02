@@ -1,18 +1,11 @@
 import 'package:arch_box_control/screens/components/dialogs.dart';
+import 'package:arch_box_control/screens/components/general.dart';
 import 'package:arch_box_control/screens/controllers/config_url_controller.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
-
-// @override
-// void initState() {
-//   super.initState();
-//   if (ConfigDbService.dbUrlFound()) {
-//     _urlConnController.text = ConfigDbService.getDbUrl();
-//   }
-// }
 
 class ConfigUrlDb extends StatelessWidget {
   const ConfigUrlDb({super.key});
@@ -44,7 +37,7 @@ class ConfigUrlDb extends StatelessWidget {
                   ),
                 ),
                 _vSpacer,
-                _subTitle(easy.tr('database_connection_url')),
+                subTitle(easy.tr('database_connection_url')),
                 SelectableText.rich(
                   TextSpan(
                     text: easy.tr('db_config_ln_01'),
@@ -59,20 +52,17 @@ class ConfigUrlDb extends StatelessWidget {
                         text: easy.tr('db_config_ln_01b'),
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      const TextSpan(
-                          text: '\nVocê pode configurar um banco de dados '),
+                      TextSpan(text: easy.tr('db_config_ln_02a')),
                       const TextSpan(
                         text: 'Local ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      const TextSpan(text: 'ou em nuvem com o '),
+                      TextSpan(text: easy.tr('db_config_ln_02b')),
                       const TextSpan(
                         text: 'MongoDB Atlas. ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      const TextSpan(
-                          text:
-                              '\nPara isso, é só informar a URL de conexão no campo abaixo.'),
+                      TextSpan(text: easy.tr('db_config_ln_03a')),
                     ],
                   ),
                 ),
@@ -80,7 +70,7 @@ class ConfigUrlDb extends StatelessWidget {
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: InfoLabel(
-                    label: 'URL de conexão',
+                    label: easy.tr('connection_url'),
                     child: TextFormBox(
                       controller: controller.urlConnController,
                       autofocus: true,
@@ -88,7 +78,7 @@ class ConfigUrlDb extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return 'É obrigatório digitar a URL de conexão com o banco de dados';
+                          return easy.tr('mandatory_url');
                         }
                         return null;
                       },
@@ -108,10 +98,10 @@ class ConfigUrlDb extends StatelessWidget {
                           String urlConn = controller.urlConnController.text;
                           if (urlConn.isEmpty || urlConn == '') {
                             showErrorDialog(
-                                context: context,
-                                title: 'Erro - URL de Conexão',
-                                content:
-                                    'A URL de conexão com a base de dados não pode estar em branco! Favor verificar.');
+                              context: context,
+                              title: easy.tr('connection_url'),
+                              content: easy.tr('empty_connection_url'),
+                            );
                           } else {
                             ConfigDbService.saveConnection(
                                 controller.urlConnController.text);
@@ -121,30 +111,17 @@ class ConfigUrlDb extends StatelessWidget {
                                     builder: (context) => const Login()));
                           }
                         },
-                        child: const Text('Salvar Conexão'),
+                        child: Text(easy.tr('save_conn')),
                       ),
                     ],
                   ),
                 ),
                 _vSpacer,
-                const SelectableText(
-                  'Caso seja necessário conectar com o MongoDB hospedado em outro serviço de nuvem, \nfavor contactar o suporte.',
-                ),
+                SelectableText(easy.tr('db_config_ln_04a')),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _subTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 16,
-        fontStyle: FontStyle.italic,
       ),
     );
   }

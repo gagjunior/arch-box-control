@@ -1,27 +1,18 @@
-import 'package:arch_box_control/exceptions/user_exception.dart';
-import 'package:arch_box_control/screens/login.dart';
+import 'package:arch_box_control/screens/components/general.dart';
+import 'package:arch_box_control/screens/controllers/user_adm_controller.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:get/get.dart';
 
-class ConfigUserAdm extends StatefulWidget {
-  const ConfigUserAdm({super.key});
-
-  @override
-  State<ConfigUserAdm> createState() => _ConfigUserAdmState();
-}
-
-class _ConfigUserAdmState extends State<ConfigUserAdm> {
+class UserAdm extends StatelessWidget {
+  const UserAdm({Key? key}) : super(key: key);
   final SizedBox _vSpacer = const SizedBox(height: 20);
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-
-  final UserService _userService = UserService();
 
   @override
   Widget build(BuildContext context) {
+    final UserAdmController controller = Get.put(UserAdmController());
+    final UserService userService = Get.put(UserService());
     return ScaffoldPage(
       content: SingleChildScrollView(
         child: Center(
@@ -40,7 +31,7 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                   ),
                 ),
                 _vSpacer,
-                _subTitle('Usuário Administrador'),
+                subTitle('Usuário Administrador'),
                 const SelectableText.rich(
                   TextSpan(
                     text: 'É obrigatório cadastrar um ',
@@ -61,7 +52,7 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                   child: InfoLabel(
                     label: 'Nome completo:',
                     child: TextFormBox(
-                      controller: _nameController,
+                      controller: controller.nameController,
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
@@ -78,7 +69,7 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                   child: InfoLabel(
                     label: 'E-mail:',
                     child: TextFormBox(
-                      controller: _emailController,
+                      controller: controller.emailController,
                       placeholder: 'exemplo@gmail.com',
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
@@ -99,7 +90,7 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                   child: InfoLabel(
                     label: 'Senha:',
                     child: TextFormBox(
-                      controller: _passwordController,
+                      controller: controller.passwordController,
                       obscureText: true,
                       obscuringCharacter: '◉',
                       autovalidateMode: AutovalidateMode.always,
@@ -121,11 +112,14 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
                     padding: ButtonState.all(const EdgeInsets.all(8)),
                   ),
                   onPressed: () async {
-                    String name = _nameController.text;
-                    String email = _emailController.text;
-                    String password = _passwordController.text;
-                    await _saveUserAdm(
-                        name: name, email: email, password: password);
+                    String name = controller.nameController.text;
+                    String email = controller.emailController.text;
+                    String password = controller.passwordController.text;
+                    await userService.saveUserAdm(
+                        context: context,
+                        name: name,
+                        email: email,
+                        password: password);
                   },
                   child: const Text('Salvar Usuário'),
                 ),
@@ -137,92 +131,6 @@ class _ConfigUserAdmState extends State<ConfigUserAdm> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _subTitle(String title) {
-    return Text(
-      title,
-      style: const TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 16,
-        fontStyle: FontStyle.italic,
-      ),
-    );
-  }
-
-  Future<bool> _isUserDataValid({
-    required String name,
-    required String email,
-    required String password,
-  }) async {
-    if (name.isEmpty || name == '') {
-      throw NameUserException('Nome do usuário não pode estar em branco!');
-    }
-
-    if (email.isEmpty || email == '') {
-      throw EmailUserException('Email não pode estar em branco!');
-    }
-
-    if (password.isEmpty || password == '') {
-      throw PasswordUserException('Senha não pode estar em branco!');
-    }
-    return true;
-  }
-
-  Future<void> _saveUserAdm(
-      {required String name,
-      required String email,
-      required String password}) async {
-    const String profile = 'admin';
-    try {
-      await _isUserDataValid(name: name, email: email, password: password)
-          .then((value) => {
-                if (value)
-                  {
-                    _userService
-                        .saveNewUser(
-                            name: name,
-                            email: email,
-                            password: password,
-                            profile: profile)
-                        .then(
-                          (value) => Navigator.push(
-                            context,
-                            FluentPageRoute(
-                              builder: (context) => const Login(),
-                            ),
-                          ),
-                        )
-                        .catchError((error) {
-                      _showErrorDialog(
-                          title: 'Erro - Usuário', content: error.toString());
-                    })
-                  }
-              });
-    } on NameUserException catch (e) {
-      _showErrorDialog(title: 'Erro - Nome Usuário', content: e.toString());
-    } on EmailUserException catch (e) {
-      _showErrorDialog(title: 'Erro - Email', content: e.toString());
-    } on PasswordUserException catch (e) {
-      _showErrorDialog(title: 'Erro - Senha', content: e.toString());
-    }
-  }
-
-  void _showErrorDialog(
-      {required String title, required String content}) async {
-    await showDialog(
-      context: context,
-      builder: (context) => ContentDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          FilledButton(
-            child: const Text('Voltar'),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
       ),
     );
   }

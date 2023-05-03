@@ -1,6 +1,8 @@
 import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
 import 'package:arch_box_control/exceptions/user_exception.dart';
+import 'package:arch_box_control/screens/components/dialogs.dart';
+import 'package:arch_box_control/screens/login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
@@ -56,5 +58,63 @@ class UserService extends GetxService {
 
   static Map<String, dynamic> getLoggedUserInfo() {
     return _boxUserInfo.get('loggedUser');
+  }
+
+  Future<bool> isUserDataValid({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    if (name.isEmpty || name == '') {
+      throw NameUserException('Nome do usuário não pode estar em branco!');
+    }
+
+    if (email.isEmpty || email == '') {
+      throw EmailUserException('Email não pode estar em branco!');
+    }
+
+    if (password.isEmpty || password == '') {
+      throw PasswordUserException('Senha não pode estar em branco!');
+    }
+    return true;
+  }
+
+  Future<void> saveUserAdm(
+      {required BuildContext context,
+        required String name,
+        required String email,
+        required String password}) async {
+    const String profile = 'admin';
+    try {
+      await isUserDataValid(name: name, email: email, password: password)
+          .then((value) => {
+        if (value)
+          {
+            saveNewUser(
+                name: name,
+                email: email,
+                password: password,
+                profile: profile)
+                .then(
+                  (value) => Navigator.push(
+                context,
+                FluentPageRoute(
+                  builder: (context) => const Login(),
+                ),
+              ),
+            )
+                .catchError((error) {
+              showErrorDialog(
+                  context: context, title: 'Erro - Usuário', content: error.toString());
+            })
+          }
+      });
+    } on NameUserException catch (e) {
+      showErrorDialog(context: context, title: 'Erro - Nome Usuário', content: e.toString());
+    } on EmailUserException catch (e) {
+      showErrorDialog(context: context, title: 'Erro - Email', content: e.toString());
+    } on PasswordUserException catch (e) {
+      showErrorDialog(context: context, title: 'Erro - Senha', content: e.toString());
+    }
   }
 }

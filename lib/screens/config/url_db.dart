@@ -1,19 +1,19 @@
 import 'package:arch_box_control/screens/components/dialogs.dart';
 import 'package:arch_box_control/screens/components/general.dart';
-import 'package:arch_box_control/screens/controllers/config_url_controller.dart';
+import 'package:arch_box_control/screens/controllers/url_db_controller.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
 
-class ConfigUrlDb extends StatelessWidget {
-  const ConfigUrlDb({super.key});
+class UrlDb extends StatelessWidget {
+  const UrlDb({super.key});
   final SizedBox _vSpacer = const SizedBox(height: 20);
 
   @override
   Widget build(BuildContext context) {
-    final ConfigUrlDbController controller = Get.put(ConfigUrlDbController());
+    final UrlDbController controller = Get.put(UrlDbController());
 
     if (ConfigDbService.dbUrlFound()) {
       controller.urlConnController.text = ConfigDbService.getDbUrl();

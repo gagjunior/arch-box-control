@@ -16,7 +16,7 @@ class LoginController extends GetxController {
           if (value.isEmpty)
             {
               Navigator.push(context,
-                  FluentPageRoute(builder: (context) => UserAdm()))
+                  FluentPageRoute(builder: (context) => const UserAdm()))
             }
         });
   }

@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       home:
-          UserAdm(), //dbUrlFound ? const Login() : const ConfigUrlDb(),
+          const UserAdm(), //dbUrlFound ? const Login() : const ConfigUrlDb(),
       theme: FluentThemeData(
         scaffoldBackgroundColor: Colors.white,
         accentColor: SystemTheme.accentColor.accent.toAccentColor(),

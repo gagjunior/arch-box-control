@@ -81,40 +81,47 @@ class UserService extends GetxService {
 
   Future<void> saveUserAdm(
       {required BuildContext context,
-        required String name,
-        required String email,
-        required String password}) async {
+      required String name,
+      required String email,
+      required String password}) async {
     const String profile = 'admin';
     try {
       await isUserDataValid(name: name, email: email, password: password)
           .then((value) => {
-        if (value)
-          {
-            saveNewUser(
-                name: name,
-                email: email,
-                password: password,
-                profile: profile)
-                .then(
-                  (value) => Navigator.push(
-                context,
-                FluentPageRoute(
-                  builder: (context) => const Login(),
-                ),
-              ),
-            )
-                .catchError((error) {
-              showErrorDialog(
-                  context: context, title: 'Erro - Usuário', content: error.toString());
-            })
-          }
-      });
+                if (value)
+                  {
+                    saveNewUser(
+                            name: name,
+                            email: email,
+                            password: password,
+                            profile: profile)
+                        .then(
+                      (value) => Navigator.push(
+                        context,
+                        FluentPageRoute(
+                          builder: (context) => const Login(),
+                        ),
+                      ),
+                    )
+                        .catchError((error) {
+                      showErrorDialog(
+                          context: context,
+                          title: 'Erro - Usuário',
+                          content: error.toString());
+                    })
+                  }
+              });
     } on NameUserException catch (e) {
-      showErrorDialog(context: context, title: 'Erro - Nome Usuário', content: e.toString());
+      showErrorDialog(
+          context: context,
+          title: 'Erro - Nome Usuário',
+          content: e.toString());
     } on EmailUserException catch (e) {
-      showErrorDialog(context: context, title: 'Erro - Email', content: e.toString());
+      showErrorDialog(
+          context: context, title: 'Erro - Email', content: e.toString());
     } on PasswordUserException catch (e) {
-      showErrorDialog(context: context, title: 'Erro - Senha', content: e.toString());
+      showErrorDialog(
+          context: context, title: 'Erro - Senha', content: e.toString());
     }
   }
 }

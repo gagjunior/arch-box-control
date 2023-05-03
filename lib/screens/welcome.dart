@@ -15,8 +15,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   String email = '';
   String loggedIn = '';
 
-  
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +33,6 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         Text('${'user'.plural(0)}: $name'),
         Text('E-mail: $email'),
         Text('${'loggedIn'.tr()}: $loggedIn'),
-      
       ],
     );
   }

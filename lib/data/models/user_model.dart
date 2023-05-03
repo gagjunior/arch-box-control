@@ -11,6 +11,7 @@ class UserModel {
   String get email => _email;
 
   String get name => _name;
+
   set name(String name) {
     if (name.isNotEmpty && name != '' && name != ' ') {
       _name = name;
@@ -18,6 +19,7 @@ class UserModel {
   }
 
   String get password => _password;
+
   set password(String password) {
     if (password.isNotEmpty && password != '' && password != ' ') {
       _password = password;

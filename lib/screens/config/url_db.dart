@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 class UrlDb extends StatelessWidget {
   const UrlDb({super.key});
+
   final SizedBox _vSpacer = const SizedBox(height: 20);
 
   @override

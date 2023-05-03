@@ -2,10 +2,10 @@ import 'package:arch_box_control/screens/components/general.dart';
 import 'package:arch_box_control/screens/controllers/user_adm_controller.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:arch_box_control/services/utils.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
-import 'package:easy_localization/easy_localization.dart' as easy;
 
 class UserAdm extends StatelessWidget {
   const UserAdm({Key? key}) : super(key: key);
@@ -56,7 +56,8 @@ class UserAdm extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return easy.tr('field_required', args: ['"${easy.tr('full_name')}"']);
+                          return easy.tr('field_required',
+                              args: ['"${easy.tr('full_name')}"']);
                         }
                         return null;
                       },
@@ -121,10 +122,12 @@ class UserAdm extends StatelessWidget {
                         email: email,
                         password: password);
                   },
-                  child: Text(easy.tr('save_param', args: ['${easy.tr(easy.plural('user', 0))}'])),
+                  child: Text(easy.tr('save_param',
+                      args: ['${easy.tr(easy.plural('user', 0))}'])),
                 ),
                 _vSpacer,
-                SelectableText(easy.tr('user_adm_lst'),
+                SelectableText(
+                  easy.tr('user_adm_lst'),
                 ),
               ],
             ),

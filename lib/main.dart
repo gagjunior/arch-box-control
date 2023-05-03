@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:arch_box_control/screens/config/url_db.dart';
-import 'package:arch_box_control/screens/config/user_adm.dart';
 import 'package:arch_box_control/screens/login.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -42,8 +41,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      home:
-          const UserAdm(), //dbUrlFound ? const Login() : const ConfigUrlDb(),
+      home: dbUrlFound ? const Login() : const UrlDb(),
       theme: FluentThemeData(
         scaffoldBackgroundColor: Colors.white,
         accentColor: SystemTheme.accentColor.accent.toAccentColor(),

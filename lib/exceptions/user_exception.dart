@@ -1,5 +1,6 @@
 class NameUserException implements Exception {
   final String _msg;
+
   NameUserException(this._msg);
 
   @override
@@ -10,6 +11,7 @@ class NameUserException implements Exception {
 
 class EmailUserException implements Exception {
   final String _msg;
+
   EmailUserException(this._msg);
 
   @override
@@ -18,6 +20,7 @@ class EmailUserException implements Exception {
 
 class PasswordUserException implements Exception {
   final String _msg;
+
   PasswordUserException(this._msg);
 
   @override
@@ -26,6 +29,7 @@ class PasswordUserException implements Exception {
 
 class NotFoundUserException implements Exception {
   final String _msg;
+
   NotFoundUserException(this._msg);
 
   @override

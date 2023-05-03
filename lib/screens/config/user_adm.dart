@@ -1,9 +1,11 @@
 import 'package:arch_box_control/screens/components/general.dart';
 import 'package:arch_box_control/screens/controllers/user_adm_controller.dart';
 import 'package:arch_box_control/services/user_service.dart';
+import 'package:arch_box_control/services/utils.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
 
 class UserAdm extends StatelessWidget {
   const UserAdm({Key? key}) : super(key: key);
@@ -23,7 +25,7 @@ class UserAdm extends StatelessWidget {
               children: [
                 _vSpacer,
                 Text(
-                  'Configuração da Base de Dados',
+                  easy.tr('database_configuration'),
                   softWrap: true,
                   style: TextStyle(
                     color: Colors.blue.dark,
@@ -31,18 +33,16 @@ class UserAdm extends StatelessWidget {
                   ),
                 ),
                 _vSpacer,
-                subTitle('Usuário Administrador'),
-                const SelectableText.rich(
+                subTitle(easy.tr('administrator_user').toTitleCase()),
+                SelectableText.rich(
                   TextSpan(
-                    text: 'É obrigatório cadastrar um ',
+                    text: easy.tr('user_adm_ln01a'),
                     children: [
                       TextSpan(
-                          text: 'usuário administrador ',
-                          style: TextStyle(fontWeight: FontWeight.w600)),
-                      TextSpan(text: 'para o primeiro acesso ao aplicativo.'),
-                      TextSpan(
-                          text:
-                              '\nVocê pode realizar o cadastro preenchendo os campos abaixo:')
+                          text: easy.tr('administrator_user'),
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                      TextSpan(text: easy.tr('user_adm_ln01b')),
+                      TextSpan(text: '\n${easy.tr("user_adm_ln2a")}')
                     ],
                   ),
                 ),
@@ -50,13 +50,13 @@ class UserAdm extends StatelessWidget {
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: InfoLabel(
-                    label: 'Nome completo:',
+                    label: easy.tr('full_name'),
                     child: TextFormBox(
                       controller: controller.nameController,
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return 'O campo "Nome completo" é obrigatório';
+                          return easy.tr('field_required', args: ['"${easy.tr('full_name')}"']);
                         }
                         return null;
                       },
@@ -74,10 +74,10 @@ class UserAdm extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return 'O campo "E-mail" é obrigatório';
+                          return easy.tr('email_required');
                         }
                         if (!EmailValidator.validate(text)) {
-                          return 'E-mail digitado não é válido';
+                          return easy.tr('email_not_valid');
                         }
                         return null;
                       },
@@ -88,7 +88,7 @@ class UserAdm extends StatelessWidget {
                 ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 600),
                   child: InfoLabel(
-                    label: 'Senha:',
+                    label: easy.tr('password'),
                     child: TextFormBox(
                       controller: controller.passwordController,
                       obscureText: true,
@@ -96,10 +96,10 @@ class UserAdm extends StatelessWidget {
                       autovalidateMode: AutovalidateMode.always,
                       validator: (text) {
                         if (text == null || text.isEmpty) {
-                          return 'O campo "Senha" é obrigatório';
+                          return easy.tr('password_required');
                         }
                         if (text.length < 8 || text.length > 12) {
-                          return 'A senha deve conter entre 8 e 12 caracteres';
+                          return easy.tr('password_validation');
                         }
                         return null;
                       },
@@ -121,11 +121,10 @@ class UserAdm extends StatelessWidget {
                         email: email,
                         password: password);
                   },
-                  child: const Text('Salvar Usuário'),
+                  child: Text(easy.tr('save_param', args: ['${easy.tr(easy.plural('user', 0))}'])),
                 ),
                 _vSpacer,
-                const SelectableText(
-                  'Após o primeiro acesso você pode preencher o cadastro completo deste usuário',
+                SelectableText(easy.tr('user_adm_lst'),
                 ),
               ],
             ),

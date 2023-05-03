@@ -12,6 +12,7 @@
   "back": "Voltar",
   "password": "Senha",
   "password_not_valid": "Senha incorreta",
+  "password_validation": "A senha deve conter entre 8 e 12 caracteres",
   "password_required": "O campo senha é obrigatório",
   "email_required": "O campo 'E-mail' é obrigatório",
   "email_not_valid": "E-mail digitado não é válido",
@@ -32,5 +33,14 @@
   "save_conn": "Salvar Conexão",
   "connection_url": "URL de conexão",
   "mandatory_url": "É obrigatório digitar a URL de conexão com o banco de dados.",
-  "empty_connection_url": "A URL de conexão com a base de dados não pode estar em branco! Favor verificar."
+  "empty_connection_url": "A URL de conexão com a base de dados não pode estar em branco! Favor verificar.",
+  "user_adm_ln01a": "É obrigatório cadastrar um ",
+  "user_adm_ln01b": "para o primeiro acesso ao aplicativo.",
+  "user_adm_ln2a": "Você pode realizar o cadastro preenchendo os campos abaixo:",
+  "user_adm_lst": "Após o primeiro acesso você pode preencher o cadastro completo deste usuário.",
+  "administrator_user": " usuário administrador ",
+  "field_required": "O campo {} é obrigatório",
+  "full_name": "Nome completo",
+  "save_param": "Salvar {}"
+
 }

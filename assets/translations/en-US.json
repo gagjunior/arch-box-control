@@ -14,6 +14,7 @@
   "password": "Password",
   "password_not_valid": "Incorrect password",
   "password_required": "Password is required",
+  "password_validation": "The password must contain between 8 and 12 characters",
   "email_required": "E-mail is required",
   "email_not_valid": "E-mail entered is not valid",
   "email_not_registered": "User with email {} not registered",
@@ -33,5 +34,13 @@
   "save_conn": "Save Connection",
   "connection_url": "Connection URL",
   "mandatory_url": "It is mandatory to enter the database connection URL.",
-  "empty_connection_url": "The database connection URL cannot be blank! Please check."
+  "empty_connection_url": "The database connection URL cannot be blank! Please check.",
+  "user_adm_ln01a": "It is mandatory to register an ",
+  "user_adm_ln01b": "for the first access to the application.",
+  "user_adm_ln2a": "You can register by filling in the fields below:",
+  "user_adm_lst": "After the first access you can fill in the complete registration of this user.",
+  "administrator_user": " administrator user ",
+  "field_required": "{} is required",
+  "full_name": "Full name",
+  "save_param": "Save {}"
 }

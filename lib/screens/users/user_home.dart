@@ -1,27 +1,16 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:easy_localization/easy_localization.dart' as easy;
+import 'package:fluent_ui/fluent_ui.dart' ;
 
-class UserHomeScreen extends StatefulWidget {
-  const UserHomeScreen({super.key});
+class UserHomeScreen extends StatelessWidget {
+  const UserHomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<UserHomeScreen> createState() => _UserHomeScreenState();
-}
-
-class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldPage.scrollable(
       header: PageHeader(
-        title: Text('Usuários', style: TextStyle(color: Colors.blue.dark)),
+        title: Text(easy.plural('user', 3), style: TextStyle(color: Colors.blue.dark)),
       ),
-      children: [
-        CommandBar(
-          primaryItems: <CommandBarItem>[
-            CommandBarButton(icon: Icon(FluentIcons.add), onPressed: null),
-            CommandBarSeparator(),
-          ],
-        ),
-      ],
+      children: [],
     );
   }
 }

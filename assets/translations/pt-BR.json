@@ -43,6 +43,7 @@
   "full_name": "Nome completo",
   "save_param": "Salvar {}",
   "register_user": "Cadastrar Usuário",
-  "list_users": "Listar Usuários"
+  "list_users": "Listar Usuários",
+  "user_list": "Lista de Usuários"
 
 }

@@ -44,5 +44,6 @@
   "full_name": "Full name",
   "save_param": "Save {}",
   "register_user": "Register User",
-  "list_users": "List Users"
+  "list_users": "List Users",
+  "user_list": "User List"
 }

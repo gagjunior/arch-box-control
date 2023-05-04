@@ -41,6 +41,8 @@
   "administrator_user": " usuário administrador ",
   "field_required": "O campo {} é obrigatório",
   "full_name": "Nome completo",
-  "save_param": "Salvar {}"
+  "save_param": "Salvar {}",
+  "register_user": "Cadastrar Usuário",
+  "list_users": "Listar Usuários"
 
 }

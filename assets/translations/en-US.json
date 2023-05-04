@@ -42,5 +42,7 @@
   "administrator_user": " administrator user ",
   "field_required": "{} is required",
   "full_name": "Full name",
-  "save_param": "Save {}"
+  "save_param": "Save {}",
+  "register_user": "Register User",
+  "list_users": "List Users"
 }

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:arch_box_control/screens/config/url_db.dart';
-import 'package:arch_box_control/screens/login.dart';
+import 'package:arch_box_control/screens/login/login.dart';
 import 'package:arch_box_control/services/config_db_service.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluent_ui/fluent_ui.dart';

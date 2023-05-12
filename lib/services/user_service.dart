@@ -2,7 +2,7 @@ import 'package:arch_box_control/data/models/user_model.dart';
 import 'package:arch_box_control/data/repositories/user_repository.dart';
 import 'package:arch_box_control/exceptions/user_exception.dart';
 import 'package:arch_box_control/screens/components/dialogs.dart';
-import 'package:arch_box_control/screens/login.dart';
+import 'package:arch_box_control/screens/login/login.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:get/get.dart';

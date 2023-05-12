@@ -1,5 +1,5 @@
 import 'package:arch_box_control/screens/users/user_home.dart';
-import 'package:arch_box_control/screens/welcome.dart';
+import 'package:arch_box_control/screens/welcome/welcome.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart' as icons;

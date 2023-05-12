@@ -26,6 +26,6 @@ class UserListScreen extends StatelessWidget {
 
   final List<CommandBarItem> commandItens = [
     CommandBarButton(
-        icon: Icon(FluentIcons.list), onPressed: () {}, label: Text('Listar'))
+        icon: const Icon(FluentIcons.list), onPressed: () {}, label: const Text('Listar'))
   ];
 }

@@ -1,5 +1,5 @@
 import 'package:arch_box_control/screens/components/general.dart';
-import 'package:arch_box_control/screens/controllers/user_adm_controller.dart';
+import 'package:arch_box_control/screens/config/controllers/user_adm_controller.dart';
 import 'package:arch_box_control/services/user_service.dart';
 import 'package:arch_box_control/services/utils.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
@@ -123,7 +123,7 @@ class UserAdm extends StatelessWidget {
                         password: password);
                   },
                   child: Text(easy.tr('save_param',
-                      args: ['${easy.tr(easy.plural('user', 0))}'])),
+                      args: [(easy.tr(easy.plural('user', 0)))])),
                 ),
                 _vSpacer,
                 SelectableText(

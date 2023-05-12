@@ -4,9 +4,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({Key? key}) : super(key: key);
-  final SizedBox _vSpacer = const SizedBox(
-    height: 10,
-  );
+  final SizedBox _vSpacer = const SizedBox(height: 10);
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +15,18 @@ class UserHomeScreen extends StatelessWidget {
       ),
       children: [
         Button(
+          style: ButtonStyle(
+            elevation: ButtonState.all(2),
+          ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(easy.tr('list_users'), textAlign: TextAlign.left),
+            padding: const EdgeInsets.all(14),
+            child: Text(
+              easy.tr('list_users'),
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           onPressed: () {
             Navigator.push(context,

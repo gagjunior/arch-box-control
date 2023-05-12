@@ -1,11 +1,18 @@
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
+import 'package:fluent_ui/fluent_ui.dart';
 
 class UserListScreen extends StatelessWidget {
-  UserListScreen({super.key});
+  const UserListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<CommandBarItem> commandItens = [
+      CommandBarButton(
+          icon: const Icon(FluentIcons.list),
+          onPressed: () {},
+          label: const Text('Listar'))
+    ];
+
     return ScaffoldPage.scrollable(
       header: PageHeader(
         title: Text(
@@ -23,9 +30,4 @@ class UserListScreen extends StatelessWidget {
       ],
     );
   }
-
-  final List<CommandBarItem> commandItens = [
-    CommandBarButton(
-        icon: const Icon(FluentIcons.list), onPressed: () {}, label: const Text('Listar'))
-  ];
 }

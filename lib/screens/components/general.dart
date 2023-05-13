@@ -10,3 +10,26 @@ Widget subTitle(String title) {
     ),
   );
 }
+
+Widget dataBaseError(String error) {
+  return ScaffoldPage.withPadding(
+    header: PageHeader(
+      title: Text(
+        'Data Base Error',
+        style: TextStyle(
+          color: Colors.red.dark,
+        ),
+      ),
+    ),
+    content: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          error,
+          style: TextStyle(fontSize: 18),
+        ),
+      ],
+    ),
+  );
+}

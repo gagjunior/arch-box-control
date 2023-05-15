@@ -12,7 +12,7 @@ class LoginController extends GetxController {
   final TextEditingController passwordController = TextEditingController();
   final UserService service = Get.put(UserService());
 
-  void findUserAdm(BuildContext context) async {
+  Future<void> findUserAdm(BuildContext context) async {
     await service
         .findUsersByProfile('admin')
         .then((value) => {

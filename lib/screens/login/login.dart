@@ -13,7 +13,7 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginController controller = Get.put(LoginController());
 
-    controller.findUserAdm(context);
+     controller.findUserAdm(context);
 
     return ScaffoldPage.scrollable(
       children: [

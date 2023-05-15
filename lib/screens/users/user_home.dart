@@ -10,7 +10,9 @@ class UserHomeScreen extends StatelessWidget {
       'Adicionar',
       'Listar',
     ];
+
     const icons = [FluentIcons.add, FluentIcons.list];
+    
     const subtitles = ['Adiconar novos usuários', 'Listar todos os usuários'];
 
     return ScaffoldPage(
@@ -30,6 +32,7 @@ class UserHomeScreen extends StatelessWidget {
               leading: CircleAvatar(
                 child: Icon(icons[index]),
               ),
+              trailing: Icon(FluentIcons.caret_hollow),
               title: Text(action),
               subtitle: Text(subtitles[index]),
             ),

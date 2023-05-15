@@ -8,6 +8,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeController controller = Get.put(HomeController());
+    
     return Obx(
       () => NavigationView(
         appBar: const NavigationAppBar(),

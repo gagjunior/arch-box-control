@@ -1,3 +1,6 @@
+import 'package:arch_box_control/screens/home/home.dart';
+import 'package:arch_box_control/screens/users/new_user.dart';
+import 'package:arch_box_control/screens/users/user_list.dart';
 import 'package:easy_localization/easy_localization.dart' as easy;
 import 'package:fluent_ui/fluent_ui.dart';
 
@@ -6,39 +9,41 @@ class UserHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const actions = [
-      'Adicionar',
-      'Listar',
-    ];
+    //UsersController controller = Get.put(UsersController());
 
-    const icons = [FluentIcons.add, FluentIcons.list];
-    
-    const subtitles = ['Adiconar novos usuários', 'Listar todos os usuários'];
-
-    return ScaffoldPage(
+    return ScaffoldPage.scrollable(
       header: PageHeader(
         title: Text(easy.plural('user', 3),
             style: TextStyle(color: Colors.blue.dark)),
       ),
-      content: ListView.builder(
-        itemCount: actions.length,
-        itemBuilder: (context, index) {
-          final action = actions[index];
-          return Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: ListTile.selectable(
-              selectionMode: ListTileSelectionMode.single,
-              onPressed: () {},
-              leading: CircleAvatar(
-                child: Icon(icons[index]),
-              ),
-              trailing: Icon(FluentIcons.caret_hollow),
-              title: Text(action),
-              subtitle: Text(subtitles[index]),
-            ),
-          );
-        },
-      ),
+      children: [
+        Button(
+          onPressed: () {},
+          child: Row(
+            children: [
+              Text('Listar'),
+              Expanded(child: Row()),
+              IconButton(
+                  icon: Icon(FluentIcons.list),
+                  onPressed: () {
+                    Navigator.of(context).push(FluentPageRoute(
+                        builder: (context) => UserListScreen()));
+                  })
+            ],
+          ),
+        ),
+        Row(
+          children: [
+            Text('Adicionar'),
+            IconButton(
+                icon: Icon(FluentIcons.list),
+                onPressed: () {
+                  Navigator.of(context).push(
+                      FluentPageRoute(builder: (context) => NewUserScreen()));
+                })
+          ],
+        )
+      ],
     );
   }
 }
